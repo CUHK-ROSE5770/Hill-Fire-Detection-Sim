@@ -36,7 +36,7 @@ Single-pass `YOLOv8s (640 px)` and `YOLOv8s (768 TTA)` met industrial targets ac
 
 ![Original pipeline, learning curves, industrial precision-recall comparison, confusion matrix and annotated D-Fire test photographs](results/figure3_edge_ai.png)
 
-**Figure 3.** Edge AI fire/smoke detection pipeline and held-out D-Fire benchmark evaluation. (a) On-board confirmation flow; (b) 256 px baseline vs. 640 px aerial fine-tuning curves; (c) held-out localized-frame precision/recall against 85%/90% industrial targets; (d) YOLOv8s (640 px) box confusion counts; (e) qualitative held-out D-Fire detections (de Venâncio et al., 2022).
+**Figure 3.** Edge AI fire/smoke detection pipeline and held-out D-Fire benchmark evaluation. (a) On-board dual-sensor perception and alert confirmation architecture; (b) 640 px aerial fine-tuning validation trajectories with mosaic closure; (c) held-out localized-frame precision/recall and small-smoke recall across 600 test images; (d) YOLOv8s (640 px) box confusion counts; (e) qualitative held-out D-Fire detections (de Venâncio et al., 2022).
 
 ## References
 

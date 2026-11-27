@@ -167,46 +167,47 @@ def plot_curves(axes, results_dir):
 
 def plot_industrial_pr(axes, prod_models):
     arms = [
-        ('v8n_base_640', 'v8n\n640 px'),
-        ('v8n_aerial_aug', 'v8n aug\nWiSE-FT'),
-        ('v8s_base_640', 'v8s\n640 px\n(Deployed)'),
-        ('v8s_multiscale_768', 'v8s\n768 TTA'),
+        ('v8n_base_640', 'v8n 640 px\n(0.5× lat.)'),
+        ('v8n_aerial_aug', 'v8n aug WiSE-FT\n(0.5× lat.)'),
+        ('v8s_base_640', 'v8s 640 px\n(Deployed · 1×)'),
+        ('v8s_multiscale_768', 'v8s 768 TTA\n(Offline · 3.1×)'),
     ]
     x = np.arange(len(arms))
-    w = 0.255
+    w = 0.285
+    bar_w = 0.24
     overall_p = [prod_models[k]['test']['frames']['localized_candidate_precision'] * 100 for k, _ in arms]
     overall_r = [prod_models[k]['test']['frames']['localized_frame_recall'] * 100 for k, _ in arms]
     small_r = [prod_models[k]['test']['boxes']['small_recall']['smoke'] * 100 for k, _ in arms]
 
     # Subtle highlight behind the deployed on-board model (v8s 640 px)
-    axes.axvspan(2 - 0.44, 2 + 0.44, color='#eaf4f1', alpha=.9, zorder=0)
+    axes.axvspan(2 - 0.46, 2 + 0.46, color='#eaf4f1', alpha=.9, zorder=0)
 
     # Low-zorder reference lines with clean right-margin labels (never touching bar numbers)
     axes.axhline(90, color='#1b695c', linestyle='--', linewidth=1.1, alpha=.55, zorder=1)
     axes.axhline(85, color=NAVY, linestyle=':', linewidth=1.1, alpha=.55, zorder=1)
-    axes.text(3.47, 90.0, '90% R', ha='left', va='center', fontsize=7.6, color='#145a4e', fontweight='bold', zorder=4)
-    axes.text(3.47, 85.0, '85% P', ha='left', va='center', fontsize=7.6, color=NAVY, fontweight='bold', zorder=4)
+    axes.text(3.60, 90.0, '90% R', ha='left', va='center', fontsize=7.6, color='#145a4e', fontweight='bold', zorder=4)
+    axes.text(3.60, 85.0, '85% P', ha='left', va='center', fontsize=7.6, color=NAVY, fontweight='bold', zorder=4)
 
-    b1 = axes.bar(x - w, overall_p, width=w * 0.90, color=NAVY, label='Frame Prec.', zorder=3)
-    b2 = axes.bar(x, overall_r, width=w * 0.90, color=TEAL, label='Frame Rec.', zorder=3)
-    b3 = axes.bar(x + w, small_r, width=w * 0.90, color=AMBER, label='Small-Smoke R', zorder=3)
+    b1 = axes.bar(x - w, overall_p, width=bar_w, color=NAVY, label='Frame Prec.', zorder=3)
+    b2 = axes.bar(x, overall_r, width=bar_w, color=TEAL, label='Frame Rec.', zorder=3)
+    b3 = axes.bar(x + w, small_r, width=bar_w, color=AMBER, label='Small-Smoke R', zorder=3)
 
     for bars in (b1, b2, b3):
         for bar in bars:
             val = bar.get_height()
             axes.text(
                 bar.get_x() + bar.get_width() / 2, val + 0.65, f'{val:.1f}',
-                ha='center', va='bottom', fontsize=7.2, color=INK, fontweight='bold', zorder=6,
-                bbox={'facecolor': 'white', 'edgecolor': 'none', 'alpha': 0.88, 'pad': 0.55},
+                ha='center', va='bottom', fontsize=6.7, color=INK, fontweight='bold', zorder=6,
+                bbox={'facecolor': 'white', 'edgecolor': 'none', 'alpha': 0.88, 'pad': 0.35},
             )
 
-    axes.set_xticks(x, [lbl for _, lbl in arms], fontsize=9.1)
+    axes.set_xticks(x, [lbl for _, lbl in arms], fontsize=7.9)
     # Emphasize the deployed on-board model tick label
     tick_labels = axes.get_xticklabels()
     tick_labels[2].set_fontweight('bold')
     tick_labels[2].set_color('#0f594c')
 
-    axes.set(ylabel='Held-out score (%)', xlim=(-0.54, 3.88), ylim=(68, 101.4))
+    axes.set(ylabel='Held-out score (%)', xlim=(-0.56, 4.10), ylim=(68, 101.4))
     axes.set_yticks([70, 75, 80, 85, 90, 95, 100])
     axes.tick_params(axis='y', labelsize=9.8)
     axes.yaxis.label.set_size(10.5)
@@ -217,7 +218,7 @@ def plot_industrial_pr(axes, prod_models):
                 fontsize=8.1, columnspacing=1.0, handlelength=1.4, borderaxespad=0.)
 
 
-def plot_confusion(axes, prod_models, model_name):
+def plot_confusion(axes, prod_models, model_name, cases):
     selected = prod_models[model_name]
     matrix = np.array(selected['test']['confusion_true_by_predicted'])
     operating = selected['test']['boxes']
@@ -230,13 +231,21 @@ def plot_confusion(axes, prod_models, model_name):
     tick_labels = ['Smoke', 'Fire', 'Bg']
     axes.set_xticks(range(3), tick_labels, fontsize=9.8)
     axes.set_yticks(range(3), tick_labels, fontsize=9.8)
-    f = selected['test']['frames']
     clean_name = DISPLAY_NAMES.get(model_name, model_name)
+    thr = selected['thresholds']
+    pos_fp = sum(len([p for p in c['predictions'] if p[6] is None or p[6] < 0]) for c in cases if c['truth'])
+    neg_fp = sum(len([p for p in c['predictions'] if p[6] is None or p[6] < 0]) for c in cases if not c['truth'])
+    pos_fp_pct = (pos_fp / (pos_fp + neg_fp) * 100.0) if (pos_fp + neg_fp) else 0.0
+    neg_alarm = operating['negative_images_with_prediction']
+    neg_total = operating['negative_images']
     axes.set(
-        xlabel=f"Predicted ({clean_name})\nFrame P {f['localized_candidate_precision']*100:.1f}% · R {f['localized_frame_recall']*100:.1f}%",
+        xlabel=(
+            f"Predicted ({clean_name} · conf {thr['smoke']:.2f}/{thr['fire']:.2f})\n"
+            f"{pos_fp_pct:.1f}% Bg-row on pos. frames · neg {neg_alarm}/{neg_total}"
+        ),
         ylabel='Reference class',
     )
-    axes.xaxis.label.set_size(9.8)
+    axes.xaxis.label.set_size(8.3)
     axes.yaxis.label.set_size(10.2)
     for row, col in np.ndindex(matrix.shape):
         color = 'white' if percentages[row, col] > .55 else INK
@@ -327,7 +336,7 @@ def main():
     pipeline(design)
 
     curves = figure.add_subplot(grid[1, 0])
-    title(curves, '(b) YOLOv8n aerial fine-tuning trajectories', pad=22)
+    title(curves, '(b) YOLOv8n aerial fine-tuning (ablation)', pad=22)
     plot_curves(curves, args.results)
 
     bars = figure.add_subplot(grid[1, 1])
@@ -336,7 +345,7 @@ def main():
 
     matrix_axes = figure.add_subplot(grid[1, 2])
     title(matrix_axes, '(d) Held-out box confusion', pad=22)
-    plot_confusion(matrix_axes, prod_models, args.model)
+    plot_confusion(matrix_axes, prod_models, args.model, cases)
 
     bottom = figure.add_subplot(grid[2, :])
     title(bottom, '(e) Annotated D-Fire held-out test photographs (deployed v8s 640 px)', pad=6)

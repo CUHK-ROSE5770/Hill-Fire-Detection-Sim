@@ -16,7 +16,7 @@ from ultralytics import YOLO
 from ultralytics.utils import torch_utils
 
 from prepare_data import CLASSES, IMAGE_SUFFIXES
-from train import EXPERIMENTS, dataset_config
+from train import BASELINE_EXPERIMENTS, EXPERIMENTS, dataset_config
 
 
 CONFIDENCE_GRID = (.001, .003, .005, .01, .02, .03, .05, .075, .10, .15, .20, .25, .35, .50, .65, .80, .95)
@@ -58,14 +58,15 @@ def predict_split(model, root, split, imgsz, device):
     return rows
 
 
-def score(rows, conf, class_aware=True):
+def score(rows, conf):
+    thresholds = (conf, conf) if isinstance(conf, (int, float)) else conf
     matrix = np.zeros((3, 3), dtype=int)  # rows = true class, columns = predicted class
     small = np.zeros(2, dtype=int)
     small_hit = np.zeros(2, dtype=int)
     negative = false_alarm = 0
     cases = []
     for filename, width, height, truth, preds, _ in rows:
-        active = [pred for pred in preds if pred[4] >= conf]
+        active = [pred for pred in preds if pred[4] >= thresholds[int(pred[5])]]
         boxes = np.asarray([row[1:5] for row in truth], dtype=float).reshape(-1, 4)
         remaining = np.ones(len(truth), dtype=bool)
         true_classes = np.asarray([row[0] for row in truth], dtype=int)
@@ -77,7 +78,7 @@ def score(rows, conf, class_aware=True):
         matched = []
         for x1, y1, x2, y2, confidence, predicted in active:
             predicted = int(predicted)
-            eligible = np.flatnonzero(remaining & ((true_classes == predicted) if class_aware else True))
+            eligible = np.flatnonzero(remaining & (true_classes == predicted))
             similarities = overlap(np.asarray((x1, y1, x2, y2)), boxes[eligible])
             target = -1
             if similarities.size and similarities.max() >= .5:
@@ -108,6 +109,30 @@ def score(rows, conf, class_aware=True):
         'negative_image_alert_rate': false_alarm / max(negative, 1),
         'matrix': matrix.tolist(),
     }, cases
+
+
+def confusion_matrix(matrix, cases):
+    """Pair only residual wrong-class predictions, preserving the operating-point true positives."""
+    matrix = np.array(matrix, dtype=int, copy=True)
+    for case in cases:
+        truth, predictions = case['truth'], case['predictions']
+        occupied = {pred[6] for pred in predictions if pred[6] >= 0}
+        for x1, y1, x2, y2, _, predicted, match in predictions:
+            if match >= 0:
+                continue
+            eligible = [j for j, item in enumerate(truth) if j not in occupied and item[0] != predicted]
+            if not eligible:
+                continue
+            ious = overlap(np.array([x1, y1, x2, y2]), np.array([truth[j][1:5] for j in eligible]))
+            best = ious.argmax()
+            if ious[best] >= .5:
+                index = eligible[best]
+                cls = truth[index][0]
+                matrix[cls, 2] -= 1
+                matrix[2, predicted] -= 1
+                matrix[cls, predicted] += 1
+                occupied.add(index)
+    return matrix.tolist()
 
 
 def calibrate(rows):
@@ -148,7 +173,7 @@ def main():
     parser.add_argument('--runs', type=Path, required=True)
     parser.add_argument('--results', type=Path, required=True)
     parser.add_argument('--models', type=Path, required=True)
-    parser.add_argument('--only', nargs='+', choices=EXPERIMENTS, default=list(EXPERIMENTS))
+    parser.add_argument('--only', nargs='+', choices=EXPERIMENTS, default=BASELINE_EXPERIMENTS)
     parser.add_argument('--device', default='cpu')
     parser.add_argument('--threads', type=int, default=6)
     parser.add_argument('--export', nargs='+', choices=EXPERIMENTS, default=['v8n_base', 'v8n_aug'])
@@ -176,7 +201,7 @@ def main():
         threshold = operating['threshold']
         test, cases = score(test_rows, threshold)
         shared, _ = score(test_rows, .10)
-        confusion, _ = score(test_rows, threshold, class_aware=False)
+        confusion = confusion_matrix(test['matrix'], cases)
         latency = np.asarray([sum(item[-1].values()) for item in test_rows[10:]])
         report = model.val(data=str(data), split='test', imgsz=imgsz, batch=1, device=args.device,
                            workers=0, plots=False, conf=.001, iou=.7, max_det=100, rect=False,
@@ -190,7 +215,7 @@ def main():
             'validation_curve': curve,
             'test_operating_point': test,
             'test_shared_threshold': shared,
-            'test_confusion_true_by_predicted': confusion['matrix'],
+            'test_confusion_true_by_predicted': confusion,
             'test_images': len(test_rows),
             'pipeline_mean_ms': float(latency.mean()),
             'pipeline_p95_ms': float(np.percentile(latency, 95)),
@@ -204,9 +229,8 @@ def main():
             packaged = YOLO(args.models / f'{name}.pt')
             packaged.export(format='onnx', imgsz=imgsz, opset=17, dynamic=False, simplify=False,
                             device='cpu', batch=1, half=False, nms=False)
-        if name == 'v8n_aug':
-            (args.results / 'qualitative_boxes.json').write_text(json.dumps(cases, separators=(',', ':')) + '\n',
-                                                                encoding='utf-8')
+        (args.results / f'{name}_test_boxes.json').write_text(json.dumps(cases, separators=(',', ':')) + '\n',
+                                                             encoding='utf-8')
 
     output = {'platform': platform.platform(), 'processor': platform.processor(), 'device': args.device,
               'torch': torch.__version__, 'ultralytics': ultralytics.__version__, 'threads': args.threads,

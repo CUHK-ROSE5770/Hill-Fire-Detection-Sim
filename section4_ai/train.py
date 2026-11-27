@@ -1,4 +1,4 @@
-"""Fine-tune the three Section 4 experiment arms on identical data splits."""
+"""Fine-tune Section 4 detectors on the fixed D-Fire splits."""
 
 import argparse
 import json
@@ -19,6 +19,8 @@ EXPERIMENTS = {
     'v8s_base': ('yolov8s.pt', {'mosaic': 0., 'scale': 0., 'flipud': 0., 'translate': 0.}),
     'v8n_aug': ('yolov8n.pt', {'mosaic': 1., 'scale': .35, 'flipud': .10, 'translate': 0.}),
 }
+BASELINE_EXPERIMENTS = tuple(EXPERIMENTS)
+EXPERIMENTS['v8n_refined'] = ('v8n_base.pt', {'mosaic': .25, 'scale': .20, 'flipud': 0., 'translate': .05})
 
 
 def dataset_config(data, output):
@@ -35,8 +37,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data', required=True, type=Path)
     parser.add_argument('--runs', required=True, type=Path)
-    parser.add_argument('--init', required=True, type=Path, help='Directory with official COCO weights')
-    parser.add_argument('--only', nargs='+', choices=EXPERIMENTS, default=list(EXPERIMENTS))
+    parser.add_argument('--init', required=True, type=Path, help='Directory with the experiment’s initial checkpoint')
+    parser.add_argument('--only', nargs='+', choices=EXPERIMENTS, default=BASELINE_EXPERIMENTS)
     parser.add_argument('--device', default='cpu')
     parser.add_argument('--seed', type=int, default=5770)
     parser.add_argument('--epochs', type=int, default=5)
@@ -44,6 +46,8 @@ def main():
     parser.add_argument('--batch', type=int, default=16)
     parser.add_argument('--threads', type=int, default=6)
     parser.add_argument('--freeze', type=int, default=10)
+    parser.add_argument('--lr0', type=float, default=.002)
+    parser.add_argument('--close-mosaic', type=int, default=0)
     args = parser.parse_args()
     args.runs.mkdir(parents=True, exist_ok=True)
     torch_utils.NUM_THREADS = args.threads  # Ultralytics resets this in select_device on CPU.
@@ -56,14 +60,14 @@ def main():
         weight, aug = EXPERIMENTS[name]
         initial = args.init / weight
         if not initial.is_file():
-            raise FileNotFoundError(f'Missing official transfer-learning checkpoint {initial}')
+            raise FileNotFoundError(f'Missing transfer-learning checkpoint {initial}')
         model = YOLO(initial.resolve())
         model.train(
             data=str(data), project=str(args.runs.resolve()), name=name, device=args.device,
             epochs=args.epochs, imgsz=args.imgsz, batch=args.batch, workers=0,
             freeze=args.freeze, seed=args.seed, deterministic=True, cache=False, amp=False,
-            optimizer='AdamW', lr0=.002, lrf=.1, cos_lr=True, warmup_epochs=1., patience=0,
-            close_mosaic=0, fliplr=.5, hsv_h=.015, hsv_s=.7, hsv_v=.4,
+            optimizer='AdamW', lr0=args.lr0, lrf=.1, cos_lr=True, warmup_epochs=1., patience=0,
+            close_mosaic=args.close_mosaic, fliplr=.5, hsv_h=.015, hsv_s=.7, hsv_v=.4,
             plots=False, exist_ok=False, verbose=False, **aug,
         )
         checkpoint = path / 'weights' / 'best.pt'

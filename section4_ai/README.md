@@ -9,7 +9,7 @@ To regenerate Word after editing the Markdown, install `python-docx` and run `py
 | Three fine-tuned PyTorch checkpoints and both nano variants in ONNX | [Models](models/) |
 | Split membership, label archive, hashes and source information | [Data](data/) |
 | Held-out metrics, calibration sweep, training histories and test box coordinates | [Results](results/) |
-| Original pipeline, learning curves, confusion matrix and qualitative examples | [Figure 3](results/figure3_edge_ai.png) |
+| Pipeline, learning curves, confusion matrix and annotated test photographs | [Figure 3](results/figure3_edge_ai.png) |
 | Simulation observation contract and Jetson validation procedure | [Perception and deployment](#perception-and-deployment) |
 
 ## Reproduce the benchmark
@@ -32,15 +32,17 @@ Download the official [YOLOv8n](https://github.com/ultralytics/assets/releases/d
 ```sh
 python section4_ai/train.py --data .local-section4/dfire-4500/data.yaml --runs .local-section4/runs --init .local-section4/init
 python section4_ai/evaluate.py --data .local-section4/dfire-4500/data.yaml --runs .local-section4/runs --results .local-section4/results --models .local-section4/models
-python section4_ai/make_figure.py --results .local-section4/results --output .local-section4/results/figure3_edge_ai.png
+python section4_ai/make_figure.py --results .local-section4/results --images .local-section4/dfire-4500/test/images --output .local-section4/results/figure3_edge_ai.png
 python -m unittest discover -s section4_ai -v
 ```
 
 All arms use the same seed, 256 px input, freeze policy, optimizer, epoch budget, train/validation data, and test data. The baseline retains HSV jitter and horizontal flipping. The augmented nano arm adds mosaic (1.0), random scale (0.35), and vertical flipping (0.10). Compare the two baseline arms for model size and the two nano arms for augmentation. The ablation estimates the effect of the combined augmentation settings at one seed.
 
-Test mAP@0.5 and mAP@0.5:0.95 use Ultralytics' AP calculation with a confidence floor of 0.001 and class-aware NMS at IoU 0.70. Operating-point recall and precision use greedy, confidence-ordered, one-to-one same-class matching at IoU ≥ 0.50. A small instance covers fewer than 1,024 pixels² after resizing and letterboxing. Validation selects maximum macro precision among grid points with both class recalls above 90%, falling back to maximum macro F2 when no grid point qualifies. The JSON also provides common-threshold metrics at 0.10. Confusion counts allow off-diagonal class errors through class-agnostic matching at the same box IoU. Negative-frame alarm rate is the share of images with empty annotations and at least one retained RGB box. These image-level measures precede temporal and thermal filtering.
+Test mAP@0.5 and mAP@0.5:0.95 use Ultralytics' AP calculation with a confidence floor of 0.001 and class-aware NMS at IoU 0.70. Operating-point recall and precision use greedy, confidence-ordered, one-to-one same-class matching at IoU ≥ 0.50. A small instance covers fewer than 1,024 pixels² after resizing and letterboxing. Validation selects maximum macro precision among grid points with both class recalls above 90%, falling back to maximum macro F2 when no grid point qualifies. The JSON also provides common-threshold metrics at 0.10. The confusion matrix preserves these true-positive matches before pairing remaining wrong-class predictions with unmatched labels at IoU ≥ 0.50. Its background row and column count unmatched boxes, with no true-negative box count. Negative-frame alarm rate is the share of images with empty annotations and at least one retained RGB box. These image-level measures precede temporal and thermal filtering.
 
 CPU speed is reciprocal mean batch-one RGB preprocessing, inference and NMS time on the same test images at a confidence floor of 0.001, after excluding the first 10 frames. It excludes file decode, thermal alignment, tracking and network transport. For equipment comparisons, compare the `pipeline_mean_ms` and `pipeline_p95_ms` fields using the same input and evaluation settings.
+
+Figure 3 overlays selected dataset and model boxes on four fixed [D-Fire](https://github.com/gaia-solutions-on-demand/DFireDataset) test photographs. Other boxes on those frames remain available in the per-image JSON records. The photos retain their original aspect ratios and camera markings.
 
 ## Perception and deployment
 

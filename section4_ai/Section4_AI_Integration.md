@@ -27,14 +27,14 @@ YOLOv8s scored 5.1 percentage points higher in mAP@0.5 than baseline YOLOv8n, an
 | Model | Params | mAP50 | Smoke R | Fire R | Small R¹ | Neg.² | CPU FPS |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | YOLOv8n baseline | 3.01M | 39.3% | 54.5% | 45.0% | 21.4% | 17.5% | 37.7 |
-| YOLOv8s baseline | 11.14M | 44.4% | 57.9% | 41.2% | 13.6% | 11.1% | 22.3 |
+| YOLOv8s baseline | 11.14M | 44.4% | 57.9% | 41.5% | 13.6% | 11.1% | 22.3 |
 | YOLOv8n augmented | 3.01M | 36.7% | 53.6% | 41.7% | 14.6% | 19.3% | 42.9 |
 
 *Note.* ¹ Small-smoke recall for boxes under 1,024 px² at model input. ² Share of negative images with an RGB prediction. CPU FPS excludes decode and thermal processing.
 
 ![Original pipeline, learning curves, confusion counts and redrawn test boxes](results/figure3_edge_ai.png)
 
-**Figure 3.** Edge AI fire and smoke detection pipeline and D-Fire evaluation. Panels (c) and (d) show augmented YOLOv8n at confidence 0.1. Panel (d) redraws test box coordinates as diagrams.
+**Figure 3.** Edge AI pipeline and D-Fire evaluation. Panel (c) shows box counts with row-proportional shading. Panel (d) compares selected ground-truth and model boxes on D-Fire test photographs (de Venâncio et al., 2022).
 
 ## References
 

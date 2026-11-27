@@ -1,0 +1,26 @@
+{
+  "test": {
+    "background": 280,
+    "fire": 31,
+    "fire_boxes": 398,
+    "smoke": 165,
+    "smoke+fire": 124,
+    "smoke_boxes": 321
+  },
+  "train": {
+    "background": 1502,
+    "fire": 181,
+    "fire_boxes": 2249,
+    "smoke": 897,
+    "smoke+fire": 720,
+    "smoke_boxes": 1831
+  },
+  "val": {
+    "background": 273,
+    "fire": 33,
+    "fire_boxes": 391,
+    "smoke": 163,
+    "smoke+fire": 131,
+    "smoke_boxes": 334
+  }
+}

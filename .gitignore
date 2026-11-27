@@ -221,3 +221,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Section 4 experiment cache and full local training runs
+/.local-section4/

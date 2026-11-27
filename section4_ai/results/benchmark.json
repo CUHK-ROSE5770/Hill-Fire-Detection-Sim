@@ -1,0 +1,2735 @@
+{
+  "platform": "Windows-10-10.0.22631-SP0",
+  "processor": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+  "device": "cpu",
+  "torch": "2.5.1+cpu",
+  "ultralytics": "8.3.190",
+  "threads": 6,
+  "experiments": {
+    "v8n_base": {
+      "parameters": 3011238,
+      "map50": 0.39299927814032176,
+      "map50_95": 0.17637749762260563,
+      "validation_target_met": false,
+      "validation_operating_point": {
+        "threshold": 0.1,
+        "precision": {
+          "smoke": 0.44081632653061226,
+          "fire": 0.2556390977443609
+        },
+        "recall": {
+          "smoke": 0.6467065868263473,
+          "fire": 0.43478260869565216
+        },
+        "small_recall": {
+          "smoke": 0.3333333333333333,
+          "fire": 0.37267080745341613
+        },
+        "small_support": {
+          "smoke": 99,
+          "fire": 322
+        },
+        "truth_support": {
+          "smoke": 334,
+          "fire": 391
+        },
+        "negative_images": 273,
+        "negative_images_with_prediction": 47,
+        "negative_image_alert_rate": 0.17216117216117216,
+        "matrix": [
+          [
+            216,
+            0,
+            118
+          ],
+          [
+            0,
+            170,
+            221
+          ],
+          [
+            274,
+            495,
+            0
+          ]
+        ]
+      },
+      "validation_curve": [
+        {
+          "threshold": 0.001,
+          "precision": {
+            "smoke": 0.021811949832515384,
+            "fire": 0.03632478632478633
+          },
+          "recall": {
+            "smoke": 0.8383233532934131,
+            "fire": 0.6086956521739131
+          },
+          "small_recall": {
+            "smoke": 0.5858585858585859,
+            "fire": 0.5372670807453416
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 257,
+          "negative_image_alert_rate": 0.9413919413919414,
+          "matrix": [
+            [
+              280,
+              0,
+              54
+            ],
+            [
+              0,
+              238,
+              153
+            ],
+            [
+              12557,
+              6314,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.003,
+          "precision": {
+            "smoke": 0.04408883082952319,
+            "fire": 0.052917232021709636
+          },
+          "recall": {
+            "smoke": 0.8083832335329342,
+            "fire": 0.59846547314578
+          },
+          "small_recall": {
+            "smoke": 0.5454545454545454,
+            "fire": 0.5279503105590062
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 240,
+          "negative_image_alert_rate": 0.8791208791208791,
+          "matrix": [
+            [
+              270,
+              0,
+              64
+            ],
+            [
+              0,
+              234,
+              157
+            ],
+            [
+              5854,
+              4188,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.005,
+          "precision": {
+            "smoke": 0.06117755289788408,
+            "fire": 0.06346578366445917
+          },
+          "recall": {
+            "smoke": 0.7964071856287425,
+            "fire": 0.5882352941176471
+          },
+          "small_recall": {
+            "smoke": 0.5353535353535354,
+            "fire": 0.5217391304347826
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 214,
+          "negative_image_alert_rate": 0.7838827838827839,
+          "matrix": [
+            [
+              266,
+              0,
+              68
+            ],
+            [
+              0,
+              230,
+              161
+            ],
+            [
+              4082,
+              3394,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.01,
+          "precision": {
+            "smoke": 0.09798055347793568,
+            "fire": 0.082687338501292
+          },
+          "recall": {
+            "smoke": 0.7844311377245509,
+            "fire": 0.5728900255754475
+          },
+          "small_recall": {
+            "smoke": 0.5252525252525253,
+            "fire": 0.5093167701863354
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 187,
+          "negative_image_alert_rate": 0.684981684981685,
+          "matrix": [
+            [
+              262,
+              0,
+              72
+            ],
+            [
+              0,
+              224,
+              167
+            ],
+            [
+              2412,
+              2485,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.02,
+          "precision": {
+            "smoke": 0.15098861593768723,
+            "fire": 0.11064499213424227
+          },
+          "recall": {
+            "smoke": 0.7544910179640718,
+            "fire": 0.5396419437340153
+          },
+          "small_recall": {
+            "smoke": 0.46464646464646464,
+            "fire": 0.4720496894409938
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 155,
+          "negative_image_alert_rate": 0.5677655677655677,
+          "matrix": [
+            [
+              252,
+              0,
+              82
+            ],
+            [
+              0,
+              211,
+              180
+            ],
+            [
+              1417,
+              1696,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.03,
+          "precision": {
+            "smoke": 0.1981981981981982,
+            "fire": 0.13166345536287732
+          },
+          "recall": {
+            "smoke": 0.7245508982035929,
+            "fire": 0.5242966751918159
+          },
+          "small_recall": {
+            "smoke": 0.43434343434343436,
+            "fire": 0.45652173913043476
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 122,
+          "negative_image_alert_rate": 0.4468864468864469,
+          "matrix": [
+            [
+              242,
+              0,
+              92
+            ],
+            [
+              0,
+              205,
+              186
+            ],
+            [
+              979,
+              1352,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.05,
+          "precision": {
+            "smoke": 0.27515151515151515,
+            "fire": 0.1742627345844504
+          },
+          "recall": {
+            "smoke": 0.6796407185628742,
+            "fire": 0.49872122762148335
+          },
+          "small_recall": {
+            "smoke": 0.36363636363636365,
+            "fire": 0.43788819875776397
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 91,
+          "negative_image_alert_rate": 0.3333333333333333,
+          "matrix": [
+            [
+              227,
+              0,
+              107
+            ],
+            [
+              0,
+              195,
+              196
+            ],
+            [
+              598,
+              924,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.075,
+          "precision": {
+            "smoke": 0.37142857142857144,
+            "fire": 0.21650717703349281
+          },
+          "recall": {
+            "smoke": 0.6616766467065869,
+            "fire": 0.4629156010230179
+          },
+          "small_recall": {
+            "smoke": 0.3434343434343434,
+            "fire": 0.40062111801242234
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 64,
+          "negative_image_alert_rate": 0.23443223443223443,
+          "matrix": [
+            [
+              221,
+              0,
+              113
+            ],
+            [
+              0,
+              181,
+              210
+            ],
+            [
+              374,
+              655,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.1,
+          "precision": {
+            "smoke": 0.44081632653061226,
+            "fire": 0.2556390977443609
+          },
+          "recall": {
+            "smoke": 0.6467065868263473,
+            "fire": 0.43478260869565216
+          },
+          "small_recall": {
+            "smoke": 0.3333333333333333,
+            "fire": 0.37267080745341613
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 47,
+          "negative_image_alert_rate": 0.17216117216117216,
+          "matrix": [
+            [
+              216,
+              0,
+              118
+            ],
+            [
+              0,
+              170,
+              221
+            ],
+            [
+              274,
+              495,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.15,
+          "precision": {
+            "smoke": 0.5359116022099447,
+            "fire": 0.34498834498834496
+          },
+          "recall": {
+            "smoke": 0.5808383233532934,
+            "fire": 0.37851662404092073
+          },
+          "small_recall": {
+            "smoke": 0.24242424242424243,
+            "fire": 0.3105590062111801
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 27,
+          "negative_image_alert_rate": 0.0989010989010989,
+          "matrix": [
+            [
+              194,
+              0,
+              140
+            ],
+            [
+              0,
+              148,
+              243
+            ],
+            [
+              168,
+              281,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.2,
+          "precision": {
+            "smoke": 0.6013745704467354,
+            "fire": 0.4511784511784512
+          },
+          "recall": {
+            "smoke": 0.5239520958083832,
+            "fire": 0.34271099744245526
+          },
+          "small_recall": {
+            "smoke": 0.20202020202020202,
+            "fire": 0.27639751552795033
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 18,
+          "negative_image_alert_rate": 0.06593406593406594,
+          "matrix": [
+            [
+              175,
+              0,
+              159
+            ],
+            [
+              0,
+              134,
+              257
+            ],
+            [
+              116,
+              163,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.25,
+          "precision": {
+            "smoke": 0.649402390438247,
+            "fire": 0.5321100917431193
+          },
+          "recall": {
+            "smoke": 0.4880239520958084,
+            "fire": 0.2966751918158568
+          },
+          "small_recall": {
+            "smoke": 0.1717171717171717,
+            "fire": 0.2329192546583851
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 13,
+          "negative_image_alert_rate": 0.047619047619047616,
+          "matrix": [
+            [
+              163,
+              0,
+              171
+            ],
+            [
+              0,
+              116,
+              275
+            ],
+            [
+              88,
+              102,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.35,
+          "precision": {
+            "smoke": 0.7965116279069767,
+            "fire": 0.6528925619834711
+          },
+          "recall": {
+            "smoke": 0.4101796407185629,
+            "fire": 0.2020460358056266
+          },
+          "small_recall": {
+            "smoke": 0.15151515151515152,
+            "fire": 0.14906832298136646
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 4,
+          "negative_image_alert_rate": 0.014652014652014652,
+          "matrix": [
+            [
+              137,
+              0,
+              197
+            ],
+            [
+              0,
+              79,
+              312
+            ],
+            [
+              35,
+              42,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.5,
+          "precision": {
+            "smoke": 0.8727272727272727,
+            "fire": 0.7551020408163265
+          },
+          "recall": {
+            "smoke": 0.2874251497005988,
+            "fire": 0.09462915601023018
+          },
+          "small_recall": {
+            "smoke": 0.12121212121212122,
+            "fire": 0.062111801242236024
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 2,
+          "negative_image_alert_rate": 0.007326007326007326,
+          "matrix": [
+            [
+              96,
+              0,
+              238
+            ],
+            [
+              0,
+              37,
+              354
+            ],
+            [
+              14,
+              12,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.65,
+          "precision": {
+            "smoke": 0.9245283018867925,
+            "fire": 0.75
+          },
+          "recall": {
+            "smoke": 0.1467065868263473,
+            "fire": 0.023017902813299233
+          },
+          "small_recall": {
+            "smoke": 0.050505050505050504,
+            "fire": 0.009316770186335404
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 0,
+          "negative_image_alert_rate": 0.0,
+          "matrix": [
+            [
+              49,
+              0,
+              285
+            ],
+            [
+              0,
+              9,
+              382
+            ],
+            [
+              4,
+              3,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.8,
+          "precision": {
+            "smoke": 1.0,
+            "fire": 1.0
+          },
+          "recall": {
+            "smoke": 0.04491017964071856,
+            "fire": 0.0025575447570332483
+          },
+          "small_recall": {
+            "smoke": 0.0,
+            "fire": 0.0
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 0,
+          "negative_image_alert_rate": 0.0,
+          "matrix": [
+            [
+              15,
+              0,
+              319
+            ],
+            [
+              0,
+              1,
+              390
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.95,
+          "precision": {
+            "smoke": 0.0,
+            "fire": 0.0
+          },
+          "recall": {
+            "smoke": 0.0,
+            "fire": 0.0
+          },
+          "small_recall": {
+            "smoke": 0.0,
+            "fire": 0.0
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 0,
+          "negative_image_alert_rate": 0.0,
+          "matrix": [
+            [
+              0,
+              0,
+              334
+            ],
+            [
+              0,
+              0,
+              391
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      ],
+      "test_operating_point": {
+        "threshold": 0.1,
+        "precision": {
+          "smoke": 0.40045766590389015,
+          "fire": 0.26323529411764707
+        },
+        "recall": {
+          "smoke": 0.5451713395638629,
+          "fire": 0.44974874371859297
+        },
+        "small_recall": {
+          "smoke": 0.21359223300970873,
+          "fire": 0.3667711598746082
+        },
+        "small_support": {
+          "smoke": 103,
+          "fire": 319
+        },
+        "truth_support": {
+          "smoke": 321,
+          "fire": 398
+        },
+        "negative_images": 280,
+        "negative_images_with_prediction": 49,
+        "negative_image_alert_rate": 0.175,
+        "matrix": [
+          [
+            175,
+            0,
+            146
+          ],
+          [
+            0,
+            179,
+            219
+          ],
+          [
+            262,
+            501,
+            0
+          ]
+        ]
+      },
+      "test_shared_threshold": {
+        "threshold": 0.1,
+        "precision": {
+          "smoke": 0.40045766590389015,
+          "fire": 0.26323529411764707
+        },
+        "recall": {
+          "smoke": 0.5451713395638629,
+          "fire": 0.44974874371859297
+        },
+        "small_recall": {
+          "smoke": 0.21359223300970873,
+          "fire": 0.3667711598746082
+        },
+        "small_support": {
+          "smoke": 103,
+          "fire": 319
+        },
+        "truth_support": {
+          "smoke": 321,
+          "fire": 398
+        },
+        "negative_images": 280,
+        "negative_images_with_prediction": 49,
+        "negative_image_alert_rate": 0.175,
+        "matrix": [
+          [
+            175,
+            0,
+            146
+          ],
+          [
+            0,
+            179,
+            219
+          ],
+          [
+            262,
+            501,
+            0
+          ]
+        ]
+      },
+      "test_confusion_true_by_predicted": [
+        [
+          173,
+          4,
+          144
+        ],
+        [
+          4,
+          175,
+          219
+        ],
+        [
+          260,
+          501,
+          0
+        ]
+      ],
+      "test_images": 600,
+      "pipeline_mean_ms": 26.538316444572757,
+      "pipeline_p95_ms": 32.222085155081,
+      "pipeline_fps": 37.68136543584346,
+      "imgsz": 256,
+      "training": {
+        "epochs": 5,
+        "batch": 16,
+        "seed": 5770,
+        "freeze": 10,
+        "optimizer": "AdamW",
+        "lr0": 0.002,
+        "mosaic": 0.0,
+        "scale": 0.0,
+        "flipud": 0.0
+      }
+    },
+    "v8s_base": {
+      "parameters": 11136374,
+      "map50": 0.44411501746577764,
+      "map50_95": 0.20566474082975206,
+      "validation_target_met": false,
+      "validation_operating_point": {
+        "threshold": 0.15,
+        "precision": {
+          "smoke": 0.5083135391923991,
+          "fire": 0.4170731707317073
+        },
+        "recall": {
+          "smoke": 0.6407185628742516,
+          "fire": 0.4373401534526854
+        },
+        "small_recall": {
+          "smoke": 0.25252525252525254,
+          "fire": 0.37267080745341613
+        },
+        "small_support": {
+          "smoke": 99,
+          "fire": 322
+        },
+        "truth_support": {
+          "smoke": 334,
+          "fire": 391
+        },
+        "negative_images": 273,
+        "negative_images_with_prediction": 33,
+        "negative_image_alert_rate": 0.12087912087912088,
+        "matrix": [
+          [
+            214,
+            0,
+            120
+          ],
+          [
+            0,
+            171,
+            220
+          ],
+          [
+            207,
+            239,
+            0
+          ]
+        ]
+      },
+      "validation_curve": [
+        {
+          "threshold": 0.001,
+          "precision": {
+            "smoke": 0.03197178291045625,
+            "fire": 0.04430945149187065
+          },
+          "recall": {
+            "smoke": 0.8413173652694611,
+            "fire": 0.6342710997442456
+          },
+          "small_recall": {
+            "smoke": 0.5959595959595959,
+            "fire": 0.5652173913043478
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 250,
+          "negative_image_alert_rate": 0.9157509157509157,
+          "matrix": [
+            [
+              281,
+              0,
+              53
+            ],
+            [
+              0,
+              248,
+              143
+            ],
+            [
+              8508,
+              5349,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.003,
+          "precision": {
+            "smoke": 0.0602122590426684,
+            "fire": 0.06288343558282208
+          },
+          "recall": {
+            "smoke": 0.8323353293413174,
+            "fire": 0.629156010230179
+          },
+          "small_recall": {
+            "smoke": 0.5858585858585859,
+            "fire": 0.5590062111801242
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 213,
+          "negative_image_alert_rate": 0.7802197802197802,
+          "matrix": [
+            [
+              278,
+              0,
+              56
+            ],
+            [
+              0,
+              246,
+              145
+            ],
+            [
+              4339,
+              3666,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.005,
+          "precision": {
+            "smoke": 0.08064037948413876,
+            "fire": 0.07494580365438216
+          },
+          "recall": {
+            "smoke": 0.8143712574850299,
+            "fire": 0.618925831202046
+          },
+          "small_recall": {
+            "smoke": 0.5454545454545454,
+            "fire": 0.5496894409937888
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 188,
+          "negative_image_alert_rate": 0.6886446886446886,
+          "matrix": [
+            [
+              272,
+              0,
+              62
+            ],
+            [
+              0,
+              242,
+              149
+            ],
+            [
+              3101,
+              2987,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.01,
+          "precision": {
+            "smoke": 0.11871943085815918,
+            "fire": 0.09812889812889813
+          },
+          "recall": {
+            "smoke": 0.7994011976047904,
+            "fire": 0.6035805626598465
+          },
+          "small_recall": {
+            "smoke": 0.5353535353535354,
+            "fire": 0.531055900621118
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 155,
+          "negative_image_alert_rate": 0.5677655677655677,
+          "matrix": [
+            [
+              267,
+              0,
+              67
+            ],
+            [
+              0,
+              236,
+              155
+            ],
+            [
+              1982,
+              2169,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.02,
+          "precision": {
+            "smoke": 0.17539089055064583,
+            "fire": 0.13138267355134825
+          },
+          "recall": {
+            "smoke": 0.7724550898203593,
+            "fire": 0.5856777493606138
+          },
+          "small_recall": {
+            "smoke": 0.47474747474747475,
+            "fire": 0.5124223602484472
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 122,
+          "negative_image_alert_rate": 0.4468864468864469,
+          "matrix": [
+            [
+              258,
+              0,
+              76
+            ],
+            [
+              0,
+              229,
+              162
+            ],
+            [
+              1213,
+              1514,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.03,
+          "precision": {
+            "smoke": 0.21972318339100347,
+            "fire": 0.1558073654390935
+          },
+          "recall": {
+            "smoke": 0.7604790419161677,
+            "fire": 0.5626598465473146
+          },
+          "small_recall": {
+            "smoke": 0.45454545454545453,
+            "fire": 0.4906832298136646
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 103,
+          "negative_image_alert_rate": 0.3772893772893773,
+          "matrix": [
+            [
+              254,
+              0,
+              80
+            ],
+            [
+              0,
+              220,
+              171
+            ],
+            [
+              902,
+              1192,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.05,
+          "precision": {
+            "smoke": 0.29161747343565525,
+            "fire": 0.19961977186311788
+          },
+          "recall": {
+            "smoke": 0.7395209580838323,
+            "fire": 0.5370843989769821
+          },
+          "small_recall": {
+            "smoke": 0.41414141414141414,
+            "fire": 0.468944099378882
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 79,
+          "negative_image_alert_rate": 0.2893772893772894,
+          "matrix": [
+            [
+              247,
+              0,
+              87
+            ],
+            [
+              0,
+              210,
+              181
+            ],
+            [
+              600,
+              842,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.075,
+          "precision": {
+            "smoke": 0.3568147013782542,
+            "fire": 0.25644329896907214
+          },
+          "recall": {
+            "smoke": 0.6976047904191617,
+            "fire": 0.5089514066496164
+          },
+          "small_recall": {
+            "smoke": 0.3434343434343434,
+            "fire": 0.43788819875776397
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 62,
+          "negative_image_alert_rate": 0.2271062271062271,
+          "matrix": [
+            [
+              233,
+              0,
+              101
+            ],
+            [
+              0,
+              199,
+              192
+            ],
+            [
+              420,
+              577,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.1,
+          "precision": {
+            "smoke": 0.4106813996316759,
+            "fire": 0.3118811881188119
+          },
+          "recall": {
+            "smoke": 0.6676646706586826,
+            "fire": 0.4833759590792839
+          },
+          "small_recall": {
+            "smoke": 0.30303030303030304,
+            "fire": 0.4161490683229814
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 50,
+          "negative_image_alert_rate": 0.18315018315018314,
+          "matrix": [
+            [
+              223,
+              0,
+              111
+            ],
+            [
+              0,
+              189,
+              202
+            ],
+            [
+              320,
+              417,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.15,
+          "precision": {
+            "smoke": 0.5083135391923991,
+            "fire": 0.4170731707317073
+          },
+          "recall": {
+            "smoke": 0.6407185628742516,
+            "fire": 0.4373401534526854
+          },
+          "small_recall": {
+            "smoke": 0.25252525252525254,
+            "fire": 0.37267080745341613
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 33,
+          "negative_image_alert_rate": 0.12087912087912088,
+          "matrix": [
+            [
+              214,
+              0,
+              120
+            ],
+            [
+              0,
+              171,
+              220
+            ],
+            [
+              207,
+              239,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.2,
+          "precision": {
+            "smoke": 0.5739130434782609,
+            "fire": 0.5
+          },
+          "recall": {
+            "smoke": 0.592814371257485,
+            "fire": 0.38107416879795397
+          },
+          "small_recall": {
+            "smoke": 0.1919191919191919,
+            "fire": 0.33540372670807456
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 21,
+          "negative_image_alert_rate": 0.07692307692307693,
+          "matrix": [
+            [
+              198,
+              0,
+              136
+            ],
+            [
+              0,
+              149,
+              242
+            ],
+            [
+              147,
+              149,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.25,
+          "precision": {
+            "smoke": 0.6416382252559727,
+            "fire": 0.5757575757575758
+          },
+          "recall": {
+            "smoke": 0.562874251497006,
+            "fire": 0.340153452685422
+          },
+          "small_recall": {
+            "smoke": 0.16161616161616163,
+            "fire": 0.2981366459627329
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 12,
+          "negative_image_alert_rate": 0.04395604395604396,
+          "matrix": [
+            [
+              188,
+              0,
+              146
+            ],
+            [
+              0,
+              133,
+              258
+            ],
+            [
+              105,
+              98,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.35,
+          "precision": {
+            "smoke": 0.771689497716895,
+            "fire": 0.723404255319149
+          },
+          "recall": {
+            "smoke": 0.5059880239520959,
+            "fire": 0.2608695652173913
+          },
+          "small_recall": {
+            "smoke": 0.12121212121212122,
+            "fire": 0.22981366459627328
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 3,
+          "negative_image_alert_rate": 0.01098901098901099,
+          "matrix": [
+            [
+              169,
+              0,
+              165
+            ],
+            [
+              0,
+              102,
+              289
+            ],
+            [
+              50,
+              39,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.5,
+          "precision": {
+            "smoke": 0.8742138364779874,
+            "fire": 0.8115942028985508
+          },
+          "recall": {
+            "smoke": 0.4161676646706587,
+            "fire": 0.1432225063938619
+          },
+          "small_recall": {
+            "smoke": 0.0707070707070707,
+            "fire": 0.11801242236024845
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 0,
+          "negative_image_alert_rate": 0.0,
+          "matrix": [
+            [
+              139,
+              0,
+              195
+            ],
+            [
+              0,
+              56,
+              335
+            ],
+            [
+              20,
+              13,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.65,
+          "precision": {
+            "smoke": 0.9411764705882353,
+            "fire": 0.92
+          },
+          "recall": {
+            "smoke": 0.2874251497005988,
+            "fire": 0.058823529411764705
+          },
+          "small_recall": {
+            "smoke": 0.030303030303030304,
+            "fire": 0.034161490683229816
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 0,
+          "negative_image_alert_rate": 0.0,
+          "matrix": [
+            [
+              96,
+              0,
+              238
+            ],
+            [
+              0,
+              23,
+              368
+            ],
+            [
+              6,
+              2,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.8,
+          "precision": {
+            "smoke": 0.9743589743589743,
+            "fire": 1.0
+          },
+          "recall": {
+            "smoke": 0.11377245508982035,
+            "fire": 0.005115089514066497
+          },
+          "small_recall": {
+            "smoke": 0.010101010101010102,
+            "fire": 0.0
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 0,
+          "negative_image_alert_rate": 0.0,
+          "matrix": [
+            [
+              38,
+              0,
+              296
+            ],
+            [
+              0,
+              2,
+              389
+            ],
+            [
+              1,
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.95,
+          "precision": {
+            "smoke": 0.0,
+            "fire": 0.0
+          },
+          "recall": {
+            "smoke": 0.0,
+            "fire": 0.0
+          },
+          "small_recall": {
+            "smoke": 0.0,
+            "fire": 0.0
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 0,
+          "negative_image_alert_rate": 0.0,
+          "matrix": [
+            [
+              0,
+              0,
+              334
+            ],
+            [
+              0,
+              0,
+              391
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      ],
+      "test_operating_point": {
+        "threshold": 0.15,
+        "precision": {
+          "smoke": 0.4720812182741117,
+          "fire": 0.33954451345755693
+        },
+        "recall": {
+          "smoke": 0.5794392523364486,
+          "fire": 0.4120603015075377
+        },
+        "small_recall": {
+          "smoke": 0.13592233009708737,
+          "fire": 0.3448275862068966
+        },
+        "small_support": {
+          "smoke": 103,
+          "fire": 319
+        },
+        "truth_support": {
+          "smoke": 321,
+          "fire": 398
+        },
+        "negative_images": 280,
+        "negative_images_with_prediction": 31,
+        "negative_image_alert_rate": 0.11071428571428571,
+        "matrix": [
+          [
+            186,
+            0,
+            135
+          ],
+          [
+            0,
+            164,
+            234
+          ],
+          [
+            208,
+            319,
+            0
+          ]
+        ]
+      },
+      "test_shared_threshold": {
+        "threshold": 0.1,
+        "precision": {
+          "smoke": 0.3843137254901961,
+          "fire": 0.26398852223816355
+        },
+        "recall": {
+          "smoke": 0.6105919003115264,
+          "fire": 0.4623115577889447
+        },
+        "small_recall": {
+          "smoke": 0.18446601941747573,
+          "fire": 0.3981191222570533
+        },
+        "small_support": {
+          "smoke": 103,
+          "fire": 319
+        },
+        "truth_support": {
+          "smoke": 321,
+          "fire": 398
+        },
+        "negative_images": 280,
+        "negative_images_with_prediction": 45,
+        "negative_image_alert_rate": 0.16071428571428573,
+        "matrix": [
+          [
+            196,
+            0,
+            125
+          ],
+          [
+            0,
+            184,
+            214
+          ],
+          [
+            314,
+            513,
+            0
+          ]
+        ]
+      },
+      "test_confusion_true_by_predicted": [
+        [
+          185,
+          0,
+          136
+        ],
+        [
+          5,
+          162,
+          231
+        ],
+        [
+          204,
+          321,
+          0
+        ]
+      ],
+      "test_images": 600,
+      "pipeline_mean_ms": 44.787874411775775,
+      "pipeline_p95_ms": 49.195829848758876,
+      "pipeline_fps": 22.32747173500774,
+      "imgsz": 256,
+      "training": {
+        "epochs": 5,
+        "batch": 16,
+        "seed": 5770,
+        "freeze": 10,
+        "optimizer": "AdamW",
+        "lr0": 0.002,
+        "mosaic": 0.0,
+        "scale": 0.0,
+        "flipud": 0.0
+      }
+    },
+    "v8n_aug": {
+      "parameters": 3011238,
+      "map50": 0.36712338204319084,
+      "map50_95": 0.1589716418688591,
+      "validation_target_met": false,
+      "validation_operating_point": {
+        "threshold": 0.1,
+        "precision": {
+          "smoke": 0.40606060606060607,
+          "fire": 0.27049180327868855
+        },
+        "recall": {
+          "smoke": 0.6017964071856288,
+          "fire": 0.4219948849104859
+        },
+        "small_recall": {
+          "smoke": 0.1919191919191919,
+          "fire": 0.34782608695652173
+        },
+        "small_support": {
+          "smoke": 99,
+          "fire": 322
+        },
+        "truth_support": {
+          "smoke": 334,
+          "fire": 391
+        },
+        "negative_images": 273,
+        "negative_images_with_prediction": 64,
+        "negative_image_alert_rate": 0.23443223443223443,
+        "matrix": [
+          [
+            201,
+            0,
+            133
+          ],
+          [
+            0,
+            165,
+            226
+          ],
+          [
+            294,
+            445,
+            0
+          ]
+        ]
+      },
+      "validation_curve": [
+        {
+          "threshold": 0.001,
+          "precision": {
+            "smoke": 0.013125590179414542,
+            "fire": 0.031422561135945305
+          },
+          "recall": {
+            "smoke": 0.8323353293413174,
+            "fire": 0.6112531969309463
+          },
+          "small_recall": {
+            "smoke": 0.5959595959595959,
+            "fire": 0.5372670807453416
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 271,
+          "negative_image_alert_rate": 0.9926739926739927,
+          "matrix": [
+            [
+              278,
+              0,
+              56
+            ],
+            [
+              0,
+              239,
+              152
+            ],
+            [
+              20902,
+              7367,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.003,
+          "precision": {
+            "smoke": 0.027199191102123356,
+            "fire": 0.04476190476190476
+          },
+          "recall": {
+            "smoke": 0.8053892215568862,
+            "fire": 0.6010230179028133
+          },
+          "small_recall": {
+            "smoke": 0.5555555555555556,
+            "fire": 0.5279503105590062
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 267,
+          "negative_image_alert_rate": 0.978021978021978,
+          "matrix": [
+            [
+              269,
+              0,
+              65
+            ],
+            [
+              0,
+              235,
+              156
+            ],
+            [
+              9621,
+              5015,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.005,
+          "precision": {
+            "smoke": 0.03897267433179035,
+            "fire": 0.05370843989769821
+          },
+          "recall": {
+            "smoke": 0.781437125748503,
+            "fire": 0.5907928388746803
+          },
+          "small_recall": {
+            "smoke": 0.48484848484848486,
+            "fire": 0.5186335403726708
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 258,
+          "negative_image_alert_rate": 0.945054945054945,
+          "matrix": [
+            [
+              261,
+              0,
+              73
+            ],
+            [
+              0,
+              231,
+              160
+            ],
+            [
+              6436,
+              4070,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.01,
+          "precision": {
+            "smoke": 0.0663265306122449,
+            "fire": 0.07011530071673419
+          },
+          "recall": {
+            "smoke": 0.7395209580838323,
+            "fire": 0.5754475703324808
+          },
+          "small_recall": {
+            "smoke": 0.3939393939393939,
+            "fire": 0.5
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 238,
+          "negative_image_alert_rate": 0.8717948717948718,
+          "matrix": [
+            [
+              247,
+              0,
+              87
+            ],
+            [
+              0,
+              225,
+              166
+            ],
+            [
+              3477,
+              2984,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.02,
+          "precision": {
+            "smoke": 0.12269938650306748,
+            "fire": 0.0964716391246092
+          },
+          "recall": {
+            "smoke": 0.718562874251497,
+            "fire": 0.5524296675191815
+          },
+          "small_recall": {
+            "smoke": 0.35353535353535354,
+            "fire": 0.4782608695652174
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 191,
+          "negative_image_alert_rate": 0.6996336996336996,
+          "matrix": [
+            [
+              240,
+              0,
+              94
+            ],
+            [
+              0,
+              216,
+              175
+            ],
+            [
+              1716,
+              2023,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.03,
+          "precision": {
+            "smoke": 0.17117117117117117,
+            "fire": 0.12159814707585408
+          },
+          "recall": {
+            "smoke": 0.6826347305389222,
+            "fire": 0.5370843989769821
+          },
+          "small_recall": {
+            "smoke": 0.2828282828282828,
+            "fire": 0.45962732919254656
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 160,
+          "negative_image_alert_rate": 0.5860805860805861,
+          "matrix": [
+            [
+              228,
+              0,
+              106
+            ],
+            [
+              0,
+              210,
+              181
+            ],
+            [
+              1104,
+              1517,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.05,
+          "precision": {
+            "smoke": 0.24970691676436108,
+            "fire": 0.1605960264900662
+          },
+          "recall": {
+            "smoke": 0.6377245508982036,
+            "fire": 0.4961636828644501
+          },
+          "small_recall": {
+            "smoke": 0.25252525252525254,
+            "fire": 0.42857142857142855
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 118,
+          "negative_image_alert_rate": 0.43223443223443225,
+          "matrix": [
+            [
+              213,
+              0,
+              121
+            ],
+            [
+              0,
+              194,
+              197
+            ],
+            [
+              640,
+              1014,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.075,
+          "precision": {
+            "smoke": 0.32961783439490444,
+            "fire": 0.21608643457382953
+          },
+          "recall": {
+            "smoke": 0.6197604790419161,
+            "fire": 0.46035805626598464
+          },
+          "small_recall": {
+            "smoke": 0.1919191919191919,
+            "fire": 0.3944099378881988
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 81,
+          "negative_image_alert_rate": 0.2967032967032967,
+          "matrix": [
+            [
+              207,
+              0,
+              127
+            ],
+            [
+              0,
+              180,
+              211
+            ],
+            [
+              421,
+              653,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.1,
+          "precision": {
+            "smoke": 0.40606060606060607,
+            "fire": 0.27049180327868855
+          },
+          "recall": {
+            "smoke": 0.6017964071856288,
+            "fire": 0.4219948849104859
+          },
+          "small_recall": {
+            "smoke": 0.1919191919191919,
+            "fire": 0.34782608695652173
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 64,
+          "negative_image_alert_rate": 0.23443223443223443,
+          "matrix": [
+            [
+              201,
+              0,
+              133
+            ],
+            [
+              0,
+              165,
+              226
+            ],
+            [
+              294,
+              445,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.15,
+          "precision": {
+            "smoke": 0.519774011299435,
+            "fire": 0.3670212765957447
+          },
+          "recall": {
+            "smoke": 0.5508982035928144,
+            "fire": 0.35294117647058826
+          },
+          "small_recall": {
+            "smoke": 0.15151515151515152,
+            "fire": 0.2919254658385093
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 37,
+          "negative_image_alert_rate": 0.13553113553113552,
+          "matrix": [
+            [
+              184,
+              0,
+              150
+            ],
+            [
+              0,
+              138,
+              253
+            ],
+            [
+              170,
+              238,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.2,
+          "precision": {
+            "smoke": 0.6129032258064516,
+            "fire": 0.4637096774193548
+          },
+          "recall": {
+            "smoke": 0.5119760479041916,
+            "fire": 0.29411764705882354
+          },
+          "small_recall": {
+            "smoke": 0.13131313131313133,
+            "fire": 0.2329192546583851
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 22,
+          "negative_image_alert_rate": 0.08058608058608059,
+          "matrix": [
+            [
+              171,
+              0,
+              163
+            ],
+            [
+              0,
+              115,
+              276
+            ],
+            [
+              108,
+              133,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.25,
+          "precision": {
+            "smoke": 0.6986301369863014,
+            "fire": 0.5555555555555556
+          },
+          "recall": {
+            "smoke": 0.45808383233532934,
+            "fire": 0.24296675191815856
+          },
+          "small_recall": {
+            "smoke": 0.10101010101010101,
+            "fire": 0.19254658385093168
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 12,
+          "negative_image_alert_rate": 0.04395604395604396,
+          "matrix": [
+            [
+              153,
+              0,
+              181
+            ],
+            [
+              0,
+              95,
+              296
+            ],
+            [
+              66,
+              76,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.35,
+          "precision": {
+            "smoke": 0.7974683544303798,
+            "fire": 0.6597938144329897
+          },
+          "recall": {
+            "smoke": 0.3772455089820359,
+            "fire": 0.1636828644501279
+          },
+          "small_recall": {
+            "smoke": 0.08080808080808081,
+            "fire": 0.12422360248447205
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 5,
+          "negative_image_alert_rate": 0.018315018315018316,
+          "matrix": [
+            [
+              126,
+              0,
+              208
+            ],
+            [
+              0,
+              64,
+              327
+            ],
+            [
+              32,
+              33,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.5,
+          "precision": {
+            "smoke": 0.8941176470588236,
+            "fire": 0.868421052631579
+          },
+          "recall": {
+            "smoke": 0.2275449101796407,
+            "fire": 0.08439897698209718
+          },
+          "small_recall": {
+            "smoke": 0.050505050505050504,
+            "fire": 0.062111801242236024
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 1,
+          "negative_image_alert_rate": 0.003663003663003663,
+          "matrix": [
+            [
+              76,
+              0,
+              258
+            ],
+            [
+              0,
+              33,
+              358
+            ],
+            [
+              9,
+              5,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.65,
+          "precision": {
+            "smoke": 0.9117647058823529,
+            "fire": 0.875
+          },
+          "recall": {
+            "smoke": 0.09281437125748503,
+            "fire": 0.017902813299232736
+          },
+          "small_recall": {
+            "smoke": 0.010101010101010102,
+            "fire": 0.012422360248447204
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 0,
+          "negative_image_alert_rate": 0.0,
+          "matrix": [
+            [
+              31,
+              0,
+              303
+            ],
+            [
+              0,
+              7,
+              384
+            ],
+            [
+              3,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.8,
+          "precision": {
+            "smoke": 1.0,
+            "fire": 0.0
+          },
+          "recall": {
+            "smoke": 0.011976047904191617,
+            "fire": 0.0
+          },
+          "small_recall": {
+            "smoke": 0.010101010101010102,
+            "fire": 0.0
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 0,
+          "negative_image_alert_rate": 0.0,
+          "matrix": [
+            [
+              4,
+              0,
+              330
+            ],
+            [
+              0,
+              0,
+              391
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "threshold": 0.95,
+          "precision": {
+            "smoke": 0.0,
+            "fire": 0.0
+          },
+          "recall": {
+            "smoke": 0.0,
+            "fire": 0.0
+          },
+          "small_recall": {
+            "smoke": 0.0,
+            "fire": 0.0
+          },
+          "small_support": {
+            "smoke": 99,
+            "fire": 322
+          },
+          "truth_support": {
+            "smoke": 334,
+            "fire": 391
+          },
+          "negative_images": 273,
+          "negative_images_with_prediction": 0,
+          "negative_image_alert_rate": 0.0,
+          "matrix": [
+            [
+              0,
+              0,
+              334
+            ],
+            [
+              0,
+              0,
+              391
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      ],
+      "test_operating_point": {
+        "threshold": 0.1,
+        "precision": {
+          "smoke": 0.38478747203579416,
+          "fire": 0.2361308677098151
+        },
+        "recall": {
+          "smoke": 0.5358255451713395,
+          "fire": 0.41708542713567837
+        },
+        "small_recall": {
+          "smoke": 0.14563106796116504,
+          "fire": 0.32601880877742945
+        },
+        "small_support": {
+          "smoke": 103,
+          "fire": 319
+        },
+        "truth_support": {
+          "smoke": 321,
+          "fire": 398
+        },
+        "negative_images": 280,
+        "negative_images_with_prediction": 54,
+        "negative_image_alert_rate": 0.19285714285714287,
+        "matrix": [
+          [
+            172,
+            0,
+            149
+          ],
+          [
+            0,
+            166,
+            232
+          ],
+          [
+            275,
+            537,
+            0
+          ]
+        ]
+      },
+      "test_shared_threshold": {
+        "threshold": 0.1,
+        "precision": {
+          "smoke": 0.38478747203579416,
+          "fire": 0.2361308677098151
+        },
+        "recall": {
+          "smoke": 0.5358255451713395,
+          "fire": 0.41708542713567837
+        },
+        "small_recall": {
+          "smoke": 0.14563106796116504,
+          "fire": 0.32601880877742945
+        },
+        "small_support": {
+          "smoke": 103,
+          "fire": 319
+        },
+        "truth_support": {
+          "smoke": 321,
+          "fire": 398
+        },
+        "negative_images": 280,
+        "negative_images_with_prediction": 54,
+        "negative_image_alert_rate": 0.19285714285714287,
+        "matrix": [
+          [
+            172,
+            0,
+            149
+          ],
+          [
+            0,
+            166,
+            232
+          ],
+          [
+            275,
+            537,
+            0
+          ]
+        ]
+      },
+      "test_confusion_true_by_predicted": [
+        [
+          171,
+          3,
+          147
+        ],
+        [
+          3,
+          165,
+          230
+        ],
+        [
+          273,
+          535,
+          0
+        ]
+      ],
+      "test_images": 600,
+      "pipeline_mean_ms": 23.323957968534806,
+      "pipeline_p95_ms": 26.226415089331564,
+      "pipeline_fps": 42.87436983675971,
+      "imgsz": 256,
+      "training": {
+        "epochs": 5,
+        "batch": 16,
+        "seed": 5770,
+        "freeze": 10,
+        "optimizer": "AdamW",
+        "lr0": 0.002,
+        "mosaic": 1.0,
+        "scale": 0.35,
+        "flipud": 0.1
+      }
+    }
+  },
+  "artifacts": {
+    "v8n_aug.onnx": {
+      "sha256": "b25872c364154c1405aa0bac34c37c0a24c46b6505d2fef12960ea640ca7e6a0",
+      "bytes": 12097996
+    },
+    "v8n_aug.pt": {
+      "sha256": "0751a2d5a6aef17b93664ad94e667b75ad952dc698a3890d7649de1048c66373",
+      "bytes": 6216420
+    },
+    "v8n_base.onnx": {
+      "sha256": "11c7ba6a75c52e61c75d5c15f2ca7cdd4415d8da79f55eaf017cbeaa4b7bb9b4",
+      "bytes": 12097997
+    },
+    "v8n_base.pt": {
+      "sha256": "643fa05b75ff65e35730456fa1850799725d71bb6077cbba5299c5e4638ff10e",
+      "bytes": 6217167
+    },
+    "v8s_base.pt": {
+      "sha256": "4d87aebc4625341e5fb2a849610eeef7093c5c9a20580cd4f41a8b0a052efe5f",
+      "bytes": 22487375
+    }
+  }
+}

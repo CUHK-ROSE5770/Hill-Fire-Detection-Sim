@@ -10,7 +10,7 @@ This repository is the planned Python simulation environment for the Hill Fire D
 
 ## Repository status
 
-This repository is at the initial documentation stage. The simulator, dependency manifest, and runnable examples are planned. Setup instructions and a smoke test can be added when the first runnable implementation lands.
+The [Section 4 AI integration](section4_ai/README.md) provides the D-Fire benchmark, trained RGB fire/smoke detectors, report section, and a perception interface for simulation or recorded camera footage. The [companion model repository](https://github.com/CUHK-ROSE5770/Hill-Fire-Detection-Model) holds the Section 3 simulation and flight-planning work.
 
 ## Contributing
 

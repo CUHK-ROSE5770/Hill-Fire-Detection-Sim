@@ -16,7 +16,7 @@ from ultralytics import YOLO
 from ultralytics.utils import torch_utils
 
 from prepare_data import CLASSES, IMAGE_SUFFIXES
-from train import BASELINE_EXPERIMENTS, EXPERIMENTS, dataset_config
+from train import EXPERIMENTS, dataset_config
 
 
 CONFIDENCE_GRID = (.001, .003, .005, .01, .02, .03, .05, .075, .10, .15, .20, .25, .35, .50, .65, .80, .95)
@@ -42,11 +42,11 @@ def overlap(box, boxes):
     return intersection / np.maximum(union, 1e-9)
 
 
-def predict_split(model, root, split, imgsz, device):
+def predict_split(model, root, split, imgsz, device, *, conf=.001, iou=.70, max_det=100):
     paths = sorted(p for p in (root / split / 'images').iterdir() if p.suffix.lower() in IMAGE_SUFFIXES)
     rows = []
     results = model.predict(source=str(root / split / 'images'), stream=True, device=device, imgsz=imgsz,
-                            conf=.001, iou=.7, max_det=100, batch=1, verbose=False, rect=False)
+                            conf=conf, iou=iou, max_det=max_det, batch=1, verbose=False, rect=False)
     for result in results:
         image = Path(result.path)
         h, w = result.orig_shape
@@ -173,7 +173,7 @@ def main():
     parser.add_argument('--runs', type=Path, required=True)
     parser.add_argument('--results', type=Path, required=True)
     parser.add_argument('--models', type=Path, required=True)
-    parser.add_argument('--only', nargs='+', choices=EXPERIMENTS, default=BASELINE_EXPERIMENTS)
+    parser.add_argument('--only', nargs='+', choices=EXPERIMENTS, default=list(EXPERIMENTS))
     parser.add_argument('--device', default='cpu')
     parser.add_argument('--threads', type=int, default=6)
     parser.add_argument('--export', nargs='+', choices=EXPERIMENTS, default=['v8n_base', 'v8n_aug'])

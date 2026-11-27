@@ -7,6 +7,7 @@ To regenerate Word after editing the Markdown, install `python-docx` and run `py
 | Deliverable | Location |
 | --- | --- |
 | Three fine-tuned PyTorch checkpoints and both nano variants in ONNX | [Models](models/) |
+| Published YOLOv8s checkpoint with a locally calibrated high-recall profile | [Recall benchmark](results/recall_benchmark.json) |
 | Split membership, label archive, hashes and source information | [Data](data/) |
 | Held-out metrics, calibration sweep, training histories and test box coordinates | [Results](results/) |
 | Pipeline, learning curves, confusion matrix and annotated test photographs | [Figure 3](results/figure3_edge_ai.png) |
@@ -43,6 +44,29 @@ Test mAP@0.5 and mAP@0.5:0.95 use Ultralytics' AP calculation with a confidence 
 CPU speed is reciprocal mean batch-one RGB preprocessing, inference and NMS time on the same test images at a confidence floor of 0.001, after excluding the first 10 frames. It excludes file decode, thermal alignment, tracking and network transport. For equipment comparisons, compare the `pipeline_mean_ms` and `pipeline_p95_ms` fields using the same input and evaluation settings.
 
 Figure 3 overlays selected dataset and model boxes on four fixed [D-Fire](https://github.com/gaia-solutions-on-demand/DFireDataset) test photographs. Other boxes on those frames remain available in the per-image JSON records. The photos retain their original aspect ratios and camera markings.
+
+## High-recall profile
+
+The high-recall profile uses the [published YOLOv8s weights](https://github.com/AlimTleuliyev/wildfire-detection/tree/a44e1ecdb84b06bda145b1c3ad53854046fe14dd), which the author reports training on the official D-Fire train split. We calibrated smoke and fire confidence separately on [300 calibration images](data/recall_calibration_manifest.csv) drawn from the official test archive and excluded the 600 benchmark images by filename and SHA-256. The fixed 600-image test set was evaluated with the calibrated thresholds at 640 px.
+
+| Class | Confidence | Matched / annotated boxes | Recall at IoU ≥ 0.50 | Box precision |
+| --- | ---: | ---: | ---: | ---: |
+| Smoke | 0.030 | 294 / 321 | 91.6% | 33.1% |
+| Fire | 0.002 | 367 / 398 | 92.2% | 9.5% |
+
+The RGB detector flagged 41 of 280 negative images (14.6%). This profile supplies high-recall candidates to the confirmation gate. Jetson timing and thermal confirmation require device and sensor measurements. The 640 px profile was evaluated separately from the three 256 px local training arms printed in Figure 3.
+
+After rebuilding `.local-section4/dfire-4500`, reproduce the calibration and holdout result with the same D-Fire `test.tar` and the packaged reference weights.
+
+```sh
+python section4_ai/calibrate_recall.py --archive .local-section4/test.tar --data .local-section4/dfire-4500 --weights section4_ai/models/v8s_recall_reference.pt --output .local-section4/recall-check
+```
+
+To replay the same RGB candidate policy on a recording, pass the two calibrated thresholds to the existing confirmation pipeline.
+
+```sh
+python section4_ai/infer.py --weights section4_ai/models/v8s_recall_reference.pt --source path/to/rgb.mp4 --output .local-section4/high-recall.jsonl --imgsz 640 --smoke-conf .03 --fire-conf .002 --nms-iou .80 --max-det 300
+```
 
 ## Perception and deployment
 

@@ -12,15 +12,17 @@ YOLOv8n and YOLOv8s provide two capacities of the same single-stage detector (Ul
 
 The deployment plan uses TensorRT FP16 on a Jetson Orin Nano. Acceptance requires sustained throughput above 35 RGB frames per second, single-frame processing below 30 ms, and class recall above 90%. Three-frame confirmation adds a delay that should be measured from camera capture to alert and reported separately. Thresholds are selected on validation data for recall, with the false-alarm cost recorded on background frames.
 
+A published YOLOv8s checkpoint (Tleuliyev, n.d.) at 640 px used class thresholds selected on 300 separate calibration frames. On the fixed test split, smoke and fire box recall reached 91.6% and 92.2%. Box precision was 33.1% and 9.5%, respectively. RGB candidates were raised on 14.6% of negative frames.
+
 ## 4.3 Limitations in Country Parks
 
 Morning fog, low cloud and reflected sunlight can resemble thin smoke. At 70 m, early flames occupy few pixels, and dense canopy can block the RGB and LWIR views. Registration error or weak heat contrast can also prevent thermal corroboration. D-Fire combines varied viewpoints and has neither aligned thermal imagery nor a Hong Kong aerial test split. Validation needs local sequences spanning terrain, altitude, visibility and hard negatives. The board trial should also measure power draw and compare the additional load with the battery budget. Thermal filtering and board targets require synchronized sensor and hardware measurements.
 
 ## 4.4 D-Fire Benchmark Trial
 
-We stratified 4,500 D-Fire images into 3,300 for training, 600 for validation and 600 for held-out testing (de Venâncio, Lisboa, & Barbosa, 2022). All arms started from COCO weights and used five epochs and 256 px inputs. The first comparison changes model capacity. The second changes the augmentation package while holding the nano architecture fixed. Test recall uses IoU ≥ 0.50 and a confidence threshold selected on validation.
+We stratified 4,500 D-Fire images into 3,300 training, 600 validation and 600 test images (de Venâncio, Lisboa, & Barbosa, 2022). The three locally trained arms fine-tuned COCO weights for five epochs at 256 px. Box recall uses same-class matches at IoU ≥ 0.50.
 
-YOLOv8s scored 5.1 percentage points higher in mAP@0.5 than baseline YOLOv8n, and the nano processed 1.69 times as many frames per second on the Ryzen CPU. At a shared confidence of 0.10, small-smoke recall fell from 21.4% to 14.6% with the augmentation package. All three arms fell short of the 90% recall target for both classes together on validation, so operating points use maximum macro F2. The comparison uses one seed. Related scenes can still occur across splits because the source lacks consistent event identifiers.
+YOLOv8s gained 5.1 percentage points in mAP@0.5 over baseline YOLOv8n. The nano processed 1.69 times as many frames per second on the Ryzen CPU. At confidence 0.10, augmentation reduced small-smoke recall from 21.4% to 14.6%. The local runs use one seed and validation-selected macro F2 operating points. Related scenes may occur across splits.
 
 **Held-out RGB detector results**
 
@@ -39,6 +41,8 @@ YOLOv8s scored 5.1 percentage points higher in mAP@0.5 than baseline YOLOv8n, an
 ## References
 
 de Venâncio, P. V. A. B., Lisboa, A. C., & Barbosa, A. V. (2022). An automatic fire detection system based on deep convolutional neural networks for low-power, resource-constrained devices. *Neural Computing and Applications, 34*, 15349–15368. doi:10.1007/s00521-022-07467-z
+
+Tleuliyev, A. (n.d.). *Wildfire detection* [Model weights]. Retrieved from https://github.com/AlimTleuliyev/wildfire-detection
 
 Ultralytics. (2023). *YOLOv8* [Computer software]. Retrieved from https://docs.ultralytics.com/models/yolov8/
 

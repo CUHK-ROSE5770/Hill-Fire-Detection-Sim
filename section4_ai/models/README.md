@@ -7,6 +7,7 @@
 | `v8s_base.pt` | YOLOv8s, baseline augmentations |
 | `v8n_aug.pt` | YOLOv8n with mosaic, scale jitter and vertical flip |
 | `v8n_aug.onnx` | Augmented YOLOv8n in FP32 for comparison |
+| `v8s_recall_reference.pt` | Published D-Fire YOLOv8s weights used for independent threshold calibration |
 
 The `.pt` files are the best checkpoints by validation fitness. The ONNX graphs expose detection head output with fixed `1 × 3 × 256 × 256` RGB input. Apply Ultralytics-compatible letterboxing, normalization and downstream NMS. The TensorRT FP16 engine can be built on the target device using the [deployment instructions](../README.md#perception-and-deployment). See the [benchmark table](../results/benchmark.csv) and [full metrics](../results/benchmark.json) for selection and calibration details.
 
@@ -17,4 +18,4 @@ Transfer learning started from the Ultralytics v8.3.0 assets. Initial SHA-256 va
 | `yolov8n.pt` | `f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36` |
 | `yolov8s.pt` | `1f47a78bf100391c2a140b7ac73a1caae18c32779be7d310658112f7ac9aa78a` |
 
-The checkpoints and ONNX export are covered by the [Section 4 AGPL-3.0 license](../LICENSE).
+The locally trained checkpoints and ONNX exports are covered by the [Section 4 AGPL-3.0 license](../LICENSE). `v8s_recall_reference.pt` is the unmodified `fire-models/fire_s.pt` from [Alim Tleuliyev's repository at commit `a44e1ec`](https://github.com/AlimTleuliyev/wildfire-detection/blob/a44e1ecdb84b06bda145b1c3ad53854046fe14dd/fire-models/fire_s.pt). Preserve the [upstream MIT notice](LICENSE-upstream-fire-s.txt) and the Ultralytics model terms. This repository provides the subsequent [class-threshold calibration and held-out evaluation](../README.md#high-recall-profile).

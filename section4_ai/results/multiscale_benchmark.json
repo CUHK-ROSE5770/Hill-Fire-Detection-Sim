@@ -1,0 +1,146 @@
+{
+  "weights": {
+    "sha256": "7789fefa6da7e6f5943db8cbf7bd9b1d2a4ad4d175a9d4040438e874ce1c2b87",
+    "bytes": 22510958
+  },
+  "detector_settings": {
+    "conf": 0.0003,
+    "iou": 0.8,
+    "max_det": 300
+  },
+  "views": [
+    {
+      "imgsz": 640,
+      "tta": false,
+      "classes": [
+        "smoke",
+        "fire"
+      ]
+    },
+    {
+      "imgsz": 768,
+      "tta": true,
+      "classes": [
+        "fire"
+      ]
+    }
+  ],
+  "thresholds": {
+    "smoke": 0.03,
+    "fire": 0.01
+  },
+  "post_nms_iou": 0.6,
+  "post_max_per_class": 100,
+  "calibration": {
+    "images": 300,
+    "boxes": {
+      "threshold": [
+        0.03,
+        0.01
+      ],
+      "precision": {
+        "smoke": 0.5189003436426117,
+        "fire": 0.17975402081362346
+      },
+      "recall": {
+        "smoke": 0.9320987654320988,
+        "fire": 0.9178743961352657
+      },
+      "small_recall": {
+        "smoke": 0.9411764705882353,
+        "fire": 0.8773584905660378
+      },
+      "small_support": {
+        "smoke": 17,
+        "fire": 106
+      },
+      "truth_support": {
+        "smoke": 162,
+        "fire": 207
+      },
+      "negative_images": 138,
+      "negative_images_with_prediction": 24,
+      "negative_image_alert_rate": 0.17391304347826086,
+      "matrix": [
+        [
+          151,
+          0,
+          11
+        ],
+        [
+          0,
+          190,
+          17
+        ],
+        [
+          140,
+          867,
+          0
+        ]
+      ]
+    },
+    "frames": {
+      "positive_frames": 162,
+      "candidate_frames": 185,
+      "localized_frames": 154,
+      "localized_frame_recall": 0.9506172839506173,
+      "localized_candidate_precision": 0.8324324324324325
+    }
+  },
+  "test": {
+    "images": 600,
+    "boxes": {
+      "threshold": [
+        0.03,
+        0.01
+      ],
+      "precision": {
+        "smoke": 0.48983050847457626,
+        "fire": 0.19310344827586207
+      },
+      "recall": {
+        "smoke": 0.9003115264797508,
+        "fire": 0.914572864321608
+      },
+      "small_recall": {
+        "smoke": 0.8653846153846154,
+        "fire": 0.8777777777777778
+      },
+      "small_support": {
+        "smoke": 52,
+        "fire": 180
+      },
+      "truth_support": {
+        "smoke": 321,
+        "fire": 398
+      },
+      "negative_images": 280,
+      "negative_images_with_prediction": 41,
+      "negative_image_alert_rate": 0.14642857142857144,
+      "matrix": [
+        [
+          289,
+          0,
+          32
+        ],
+        [
+          0,
+          364,
+          34
+        ],
+        [
+          301,
+          1521,
+          0
+        ]
+      ]
+    },
+    "frames": {
+      "positive_frames": 320,
+      "candidate_frames": 360,
+      "localized_frames": 310,
+      "localized_frame_recall": 0.96875,
+      "localized_candidate_precision": 0.8611111111111112
+    }
+  }
+}

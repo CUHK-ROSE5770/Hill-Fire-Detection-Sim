@@ -1,0 +1,80 @@
+{
+  "scope": "offline RGB box detection at same-class IoU 0.50",
+  "project_review_targets": {
+    "precision": 0.9,
+    "recall": 0.9
+  },
+  "profiles": {
+    "single_scale_recall": {
+      "classes": {
+        "smoke": {
+          "matched": 294,
+          "predicted": 889,
+          "annotated": 321,
+          "precision": 0.33070866141732286,
+          "recall": 0.9158878504672897,
+          "hits_precision_target": false,
+          "hits_recall_target": true
+        },
+        "fire": {
+          "matched": 367,
+          "predicted": 3849,
+          "annotated": 398,
+          "precision": 0.09534944141335412,
+          "recall": 0.9221105527638191,
+          "hits_precision_target": false,
+          "hits_recall_target": true
+        }
+      },
+      "hits_both_targets_for_both_classes": false
+    },
+    "dual_scale": {
+      "classes": {
+        "smoke": {
+          "matched": 289,
+          "predicted": 590,
+          "annotated": 321,
+          "precision": 0.48983050847457626,
+          "recall": 0.9003115264797508,
+          "hits_precision_target": false,
+          "hits_recall_target": true
+        },
+        "fire": {
+          "matched": 364,
+          "predicted": 1885,
+          "annotated": 398,
+          "precision": 0.19310344827586207,
+          "recall": 0.914572864321608,
+          "hits_precision_target": false,
+          "hits_recall_target": true
+        }
+      },
+      "hits_both_targets_for_both_classes": false
+    },
+    "frame_gated_boxes": {
+      "classes": {
+        "smoke": {
+          "matched": 292,
+          "predicted": 870,
+          "annotated": 321,
+          "precision": 0.335632183908046,
+          "recall": 0.9096573208722741,
+          "hits_precision_target": false,
+          "hits_recall_target": true
+        },
+        "fire": {
+          "matched": 367,
+          "predicted": 3815,
+          "annotated": 398,
+          "precision": 0.09619921363040629,
+          "recall": 0.9221105527638191,
+          "hits_precision_target": false,
+          "hits_recall_target": true
+        }
+      },
+      "hits_both_targets_for_both_classes": false
+    }
+  },
+  "physical_jetson_acceptance": "unmeasured",
+  "field_event_acceptance": "unmeasured"
+}

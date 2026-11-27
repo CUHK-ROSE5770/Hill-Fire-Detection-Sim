@@ -12,8 +12,9 @@ import torch
 from ultralytics import YOLO
 from ultralytics.utils import torch_utils
 
-from evaluate import artifact_digest, predict_split, score
+from evaluate import artifact_digest, frame_candidate_metrics, predict_split, score
 from prepare_data import CLASSES, read_index
+from train import dataset_config
 
 
 INPUT_SIZE = 640
@@ -75,6 +76,7 @@ def main():
     parser.add_argument('--output', required=True, type=Path, help='New evaluation directory')
     parser.add_argument('--device', default='cpu')
     parser.add_argument('--threads', type=int, default=3)
+    parser.add_argument('--report-ap', action='store_true', help='Also run the standard Ultralytics AP benchmark')
     args = parser.parse_args()
     package_manifest = Path(__file__).with_name('data')
     fixed_test = [row for row in read_manifest(package_manifest / 'split_manifest.csv') if row['split'] == 'test']
@@ -99,12 +101,22 @@ def main():
         thresholds.append(max(feasible, key=lambda row: (row['precision'][label], row['threshold']))['threshold'])
     selected = score(calibration_rows, thresholds)[0]
     test_rows = predict_split(model, args.data.resolve(), 'test', INPUT_SIZE, args.device, **PREDICTION_SETTINGS)
-    evidence, _ = score(test_rows, thresholds)
+    evidence, cases = score(test_rows, thresholds)
     report = {'checkpoint': artifact_digest(args.weights), 'imgsz': INPUT_SIZE,
               'prediction': PREDICTION_SETTINGS, 'calibration_minimum_recall': CALIBRATION_MINIMUM,
               'thresholds': dict(zip(CLASSES, thresholds)), 'calibration_images': len(calibration_rows),
               'calibration_curve': curve, 'calibration_operating_point': selected,
-              'test_images': len(test_rows), 'test_operating_point': evidence}
+              'test_images': len(test_rows), 'test_operating_point': evidence,
+              'test_frame_candidates': frame_candidate_metrics(cases)}
+    if args.report_ap:
+        data = dataset_config(args.data / 'data.yaml', args.output)
+        metrics = model.val(data=str(data), split='test', imgsz=INPUT_SIZE, batch=1, device=args.device, workers=0,
+                            plots=False, conf=.001, iou=.70, max_det=100, rect=False,
+                            project=str(args.output.resolve()), name='standard_ap', verbose=False)
+        report['standard_ap'] = {'confidence_floor': .001, 'nms_iou': .70, 'max_det': 100,
+                                 'map50': float(metrics.box.map50), 'map50_95': float(metrics.box.map),
+                                 'class_ap50': {CLASSES[int(cls)]: float(ap)
+                                                for cls, ap in zip(metrics.box.ap_class_index, metrics.box.ap50)}}
     (args.output / 'recall_benchmark.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(evidence, indent=2))
 

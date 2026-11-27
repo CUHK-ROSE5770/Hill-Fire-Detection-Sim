@@ -2,6 +2,8 @@
 
 This package contains the ROSE5770 D-Fire benchmark and RGB-to-alert interface. The English [report section](Section4_AI_Integration.docx) can be inserted into the group report. Its [editable Markdown](Section4_AI_Integration.md) includes the same results, Figure 3 and APA 6 references.
 
+The [requirements audit](VALIDATION.md) maps each Section 4 requirement to the available evidence, including the simulated timing and LWIR tests and the remaining physical Jetson checks.
+
 To regenerate Word after editing the Markdown, install `python-docx` and run `python section4_ai/export_report.py`.
 
 | Deliverable | Location |
@@ -56,10 +58,12 @@ The high-recall profile uses the [published YOLOv8s weights](https://github.com/
 
 The RGB detector flagged 41 of 280 negative images (14.6%). This profile supplies high-recall candidates to the confirmation gate. Jetson timing and thermal confirmation require device and sensor measurements. The 640 px profile was evaluated separately from the three 256 px local training arms printed in Figure 3.
 
+For the same 640 px checkpoint, the standard Ultralytics benchmark measured 78.9% mAP@0.5 and 45.9% mAP@0.5:0.95. Smoke AP@0.5 was 83.9% and fire AP@0.5 was 73.9%. At the frozen high-recall operating point, 314 of 320 positive frames had at least one same-class IoU match. Across all 360 frames with any prediction, that gives 98.1% localized-frame recall and 87.2% localized-candidate precision. These metrics are available alongside the box results in the [JSON replay](results/recall_benchmark.json).
+
 After rebuilding `.local-section4/dfire-4500`, reproduce the calibration and holdout result with the same D-Fire `test.tar` and the packaged reference weights.
 
 ```sh
-python section4_ai/calibrate_recall.py --archive .local-section4/test.tar --data .local-section4/dfire-4500 --weights section4_ai/models/v8s_recall_reference.pt --output .local-section4/recall-check
+python section4_ai/calibrate_recall.py --archive .local-section4/test.tar --data .local-section4/dfire-4500 --weights section4_ai/models/v8s_recall_reference.pt --output .local-section4/recall-check --report-ap
 ```
 
 To replay the same RGB candidate policy on a recording, pass the two calibrated thresholds to the existing confirmation pipeline.
@@ -67,6 +71,8 @@ To replay the same RGB candidate policy on a recording, pass the two calibrated 
 ```sh
 python section4_ai/infer.py --weights section4_ai/models/v8s_recall_reference.pt --source path/to/rgb.mp4 --output .local-section4/high-recall.jsonl --imgsz 640 --smoke-conf .03 --fire-conf .002 --nms-iou .80 --max-det 300
 ```
+
+For frame-level RGB candidate screening, the calibration-selected peak gate `--frame-conf .125` lowered the number of negative frames flagged to 13 of 280. The fixed test yielded 312 localized frames out of 320 positives and 330 candidate frames, for 97.5% localized-frame recall and 94.5% localized-candidate precision. This test still includes low box precision on frames with multiple proposals. Reproduce both settings with [the frame-gate evaluator](evaluate_frame_gate.py) and see the [results](results/frame_gate_benchmark.json).
 
 ## Perception and deployment
 
@@ -78,13 +84,15 @@ python section4_ai/infer.py --weights section4_ai/models/v8n_base.pt --conf 0.10
 
 An optional `--thermal path/to/celsius_frames.npy` accepts a floating-point `(frames, height, width)` array. Register LWIR to the RGB camera coordinates and synchronize timestamps before calling the script. Invalid temperatures are represented by `NaN`. The script compares the RGB box's 90th percentile temperature to the surrounding ring median. A same-class track linked at IoU ≥ 0.30 must persist for three consecutive frames. A rise of at least 5 °C in the current registered frame yields `confirmed` and emits `new_alert` once per track. A persistent RGB cue without sufficient heat yields `rgb_candidate` for cross-view or operator verification. The association and temperature thresholds are prototype settings.
 
+Use `--thermal-hits 2` to require at least two warm observations in the latest three RGB hits, including the current frame. The [simulated replay](results/edge_simulation.json) compares it with a one-hit corroboration policy and includes persistent fog, low cloud, a brief heat spike and a warm-background confuser. [Wind extrapolation](wind_forecast.py) uses a capped spread rate and flags downwind observation priorities. The [software trace](results/edge_simulation.json) records the assumed wind and simulated perimeter.
+
 Each observation supplies class, confidence, box, pixel centroid, consecutive frame count, thermal delta, state and the `new_alert` flag. Pixel coordinates refer to the original RGB frame. Attach UAV ID, timestamp, pose, camera intrinsics and pose uncertainty in the simulator or flight integration layer before Ray–DEM geolocation. Smoke aloft can drift away from the ignition source, so retain uncertainty or verify from another viewpoint. APF/EGO-Swarm and the behavior tree consume localized evidence while retaining flight and separation constraints.
 
 On the Jetson Orin Nano, build the TensorRT FP16 engine locally against the installed JetPack/TensorRT stack. Use the same preprocessing and record the device power profile, input size, batch, warm-up and sensor pipeline scope.
 
 ```sh
 yolo export model=section4_ai/models/v8n_base.pt format=engine imgsz=256 batch=1 device=0 half=True dynamic=False simplify=False
-trtexec --loadEngine=section4_ai/models/v8n_base.engine --warmUp=1000 --duration=30
+python section4_ai/bench_edge.py --weights section4_ai/models/v8n_base.engine --images .local-section4/dfire-4500/test/images --output .local-section4/jetson-replay.json --device 0 --device-label "Jetson Orin Nano and recorded power mode" --imgsz 256 --frames 600 --warmup 50
 ```
 
 For the course targets, replay synchronized RGB/LWIR sequences and measure sustained RGB rate, capture-to-confirmation latency, fog/cloud alarm rate and per-class recall. Record the single-frame model latency and the three-frame alert latency separately. The target is >35 RGB FPS, <30 ms single-frame processing and >90% recall. The laptop CPU trial and the unit tests establish the offline benchmark and the confirmation logic. Jetson throughput, thermal performance, and Hong Kong aerial recall require the corresponding hardware and synchronized footage.

@@ -45,15 +45,18 @@ class Observation:
 class ConfirmationGate:
     """One instance per camera. Only consecutive, spatially associated RGB hits count."""
 
-    def __init__(self, confidence=.10, frames=3, association_iou=.30, min_thermal_delta_c=5.):
-        if not 0 <= confidence <= 1 or frames < 1 or not 0 < association_iou <= 1:
+    def __init__(self, confidence=.10, frames=3, association_iou=.30, min_thermal_delta_c=5., thermal_hits=1):
+        if not 0 <= confidence <= 1 or not isinstance(frames, int) or frames < 1 or not 0 < association_iou <= 1:
             raise ValueError('Invalid RGB or tracking thresholds')
         if not isfinite(min_thermal_delta_c) or min_thermal_delta_c <= 0:
             raise ValueError('Thermal temperature threshold must be positive')
+        if not isinstance(thermal_hits, int) or not 1 <= thermal_hits <= frames:
+            raise ValueError('Thermal hit count must be within the RGB confirmation window')
         self.confidence = confidence
         self.frames = frames
         self.association_iou = association_iou
         self.min_thermal_delta_c = min_thermal_delta_c
+        self.thermal_hits = thermal_hits
         self._last_frame = None
         self._next_id = 1
         self._tracks = []
@@ -63,28 +66,31 @@ class ConfirmationGate:
         if self._last_frame is not None and frame_id <= self._last_frame:
             raise ValueError('Frame IDs must be strictly increasing')
         previous = self._tracks if self._last_frame is not None and frame_id == self._last_frame + 1 else []
-        available = {track.track_id: (track, alerted) for track, alerted in previous}
+        available = {track.track_id: (track, alerted, heat) for track, alerted, heat in previous}
         tracks = []
         for detection in sorted(detections, key=lambda item: -item.confidence):
             if detection.confidence < self.confidence:
                 continue
             match_iou, track_id = max(
                 ((iou(track.xyxy, detection.xyxy), track.track_id)
-                 for track, _ in available.values() if track.label == detection.label), default=(0., -1)
+                 for track, _, _ in available.values() if track.label == detection.label), default=(0., -1)
             )
             if match_iou >= self.association_iou:
-                track, alerted = available.pop(track_id)
+                track, alerted, heat_history = available.pop(track_id)
                 count = track.consecutive_frames + 1
             else:
                 track_id, count, alerted = self._next_id, 1, False
                 self._next_id += 1
+                heat_history = ()
             delta = detection.thermal_delta_c
-            confirmed = count >= self.frames and delta is not None and delta >= self.min_thermal_delta_c
+            hot = delta is not None and delta >= self.min_thermal_delta_c
+            heat_history = (*heat_history, hot)[-self.frames:]
+            confirmed = count >= self.frames and hot and sum(heat_history) >= self.thermal_hits
             state = 'confirmed' if confirmed else ('rgb_candidate' if count >= self.frames else 'tracking')
             x1, y1, x2, y2 = detection.xyxy
             observation = Observation(track_id, frame_id, detection.label, detection.confidence, detection.xyxy,
                                       ((x1 + x2) / 2, (y1 + y2) / 2), count, delta, state,
                                       confirmed and not alerted)
-            tracks.append((observation, alerted or confirmed))
+            tracks.append((observation, alerted or confirmed, heat_history))
         self._last_frame, self._tracks = frame_id, tracks
-        return [observation for observation, _ in tracks]
+        return [observation for observation, _, _ in tracks]

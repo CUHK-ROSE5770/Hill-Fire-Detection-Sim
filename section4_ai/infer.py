@@ -43,7 +43,9 @@ def main():
     parser.add_argument('--fire-conf', type=float)
     parser.add_argument('--nms-iou', type=float, default=.70)
     parser.add_argument('--max-det', type=int, default=100)
+    parser.add_argument('--frame-conf', type=float, default=0., help='Minimum peak score among accepted RGB boxes')
     parser.add_argument('--thermal-delta-c', type=float, default=5.)
+    parser.add_argument('--thermal-hits', type=int, default=1, help='Warm observations required in the latest three RGB hits')
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError(args.output)
@@ -52,10 +54,11 @@ def main():
         raise ValueError('Thermal input must be a float array of shape (frames, height, width)')
     limits = {label: args.conf if threshold is None else threshold
               for label, threshold in (('smoke', args.smoke_conf), ('fire', args.fire_conf))}
-    if any(not 0 <= threshold <= 1 for threshold in limits.values()):
+    if any(not 0 <= threshold <= 1 for threshold in [*limits.values(), args.frame_conf]):
         parser.error('Confidence thresholds must be between 0 and 1')
     threshold_floor = min(limits.values())
-    gate = ConfirmationGate(confidence=threshold_floor, min_thermal_delta_c=args.thermal_delta_c)
+    gate = ConfirmationGate(confidence=threshold_floor, min_thermal_delta_c=args.thermal_delta_c,
+                            thermal_hits=args.thermal_hits)
     model = YOLO(args.weights, task='detect')
     stream = model.predict(source=str(args.source), stream=True, imgsz=args.imgsz, conf=threshold_floor,
                            device=args.device, verbose=False, rect=False, iou=args.nms_iou, max_det=args.max_det)
@@ -75,6 +78,8 @@ def main():
                     box = x1, y1, x2, y2
                     delta = None if thermal is None else thermal_delta(thermal[frame_id], box)
                     detections.append(Detection(label, score, box, delta))
+                if max((item.confidence for item in detections), default=0.) < args.frame_conf:
+                    detections.clear()
                 observations = gate.step(frame_id, detections)
                 file.write(json.dumps({'frame_id': frame_id, 'height': result.orig_shape[0],
                                        'width': result.orig_shape[1],

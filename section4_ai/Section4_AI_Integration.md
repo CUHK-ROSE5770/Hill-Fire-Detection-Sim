@@ -12,7 +12,9 @@ YOLOv8n and YOLOv8s provide two capacities of the same single-stage detector (Ul
 
 The deployment plan uses TensorRT FP16 on a Jetson Orin Nano. Acceptance requires sustained throughput above 35 RGB frames per second, single-frame processing below 30 ms, and class recall above 90%. Three-frame confirmation adds a delay that should be measured from camera capture to alert and reported separately. Thresholds are selected on validation data for recall, with the false-alarm cost recorded on background frames.
 
-A published YOLOv8s checkpoint (Tleuliyev, n.d.) at 640 px used class thresholds selected on 300 separate calibration frames. On the fixed test split, smoke and fire box recall reached 91.6% and 92.2%. Box precision was 33.1% and 9.5%, respectively. RGB candidates were raised on 14.6% of negative frames.
+Nano ONNX replay achieved 84.6 CPU FPS and 14.2 ms p95. In simulation, a 40 FPS source with an assumed 24 ms budget confirmed fire after 74 ms. Two warm observations rejected a one-frame heat spike.
+
+The published 640 px YOLOv8s checkpoint (Tleuliyev, n.d.), calibrated on 300 separate frames, achieved 91.6% smoke recall and 92.2% fire recall at 33.1% and 9.5% box precision. A frame confidence gate achieved 97.5% localized-frame recall and 94.5% localized-candidate precision.
 
 ## 4.3 Limitations in Country Parks
 

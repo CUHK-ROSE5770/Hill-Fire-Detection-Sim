@@ -42,11 +42,11 @@ def overlap(box, boxes):
     return intersection / np.maximum(union, 1e-9)
 
 
-def predict_split(model, root, split, imgsz, device, *, conf=.001, iou=.70, max_det=100):
+def predict_split(model, root, split, imgsz, device, *, conf=.001, iou=.70, max_det=100, augment=False):
     paths = sorted(p for p in (root / split / 'images').iterdir() if p.suffix.lower() in IMAGE_SUFFIXES)
     rows = []
     results = model.predict(source=str(root / split / 'images'), stream=True, device=device, imgsz=imgsz,
-                            conf=conf, iou=iou, max_det=max_det, batch=1, verbose=False, rect=False)
+                            conf=conf, iou=iou, max_det=max_det, batch=1, verbose=False, rect=False, augment=augment)
     for result in results:
         image = Path(result.path)
         h, w = result.orig_shape
@@ -133,6 +133,25 @@ def confusion_matrix(matrix, cases):
                 matrix[cls, predicted] += 1
                 occupied.add(index)
     return matrix.tolist()
+
+
+def frame_candidate_metrics(cases):
+    """Count images with at least one same-class IoU match, separately from box recall."""
+    positives = sum(bool(case['truth']) for case in cases)
+    candidate_frames = sum(bool(case['predictions']) for case in cases)
+    localized_frames = sum(any(prediction[6] >= 0 for prediction in case['predictions']) for case in cases)
+    return {'positive_frames': positives, 'candidate_frames': candidate_frames, 'localized_frames': localized_frames,
+            'localized_frame_recall': localized_frames / max(1, positives),
+            'localized_candidate_precision': localized_frames / max(1, candidate_frames)}
+
+
+def gate_frames(rows, thresholds, peak_threshold):
+    """Suppress all RGB proposals when a frame has no sufficiently confident surviving box."""
+    for filename, width, height, labels, boxes, timing in rows:
+        accepted = [box for box in boxes if box[4] >= thresholds[int(box[5])]]
+        if max((box[4] for box in accepted), default=0.) < peak_threshold:
+            accepted = []
+        yield (filename, width, height, labels, accepted, timing)
 
 
 def calibrate(rows):

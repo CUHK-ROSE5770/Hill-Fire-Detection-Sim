@@ -843,5 +843,23 @@
         0
       ]
     ]
+  },
+  "test_frame_candidates": {
+    "positive_frames": 320,
+    "candidate_frames": 360,
+    "localized_frames": 314,
+    "localized_frame_recall": 0.98125,
+    "localized_candidate_precision": 0.8722222222222222
+  },
+  "standard_ap": {
+    "confidence_floor": 0.001,
+    "nms_iou": 0.7,
+    "max_det": 100,
+    "map50": 0.7887567460240958,
+    "map50_95": 0.45866108854998255,
+    "class_ap50": {
+      "smoke": 0.8389312167595715,
+      "fire": 0.7385822752886201
+    }
   }
 }

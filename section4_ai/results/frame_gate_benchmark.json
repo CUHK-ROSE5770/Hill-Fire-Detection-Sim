@@ -1,0 +1,184 @@
+{
+  "weights": {
+    "sha256": "7789fefa6da7e6f5943db8cbf7bd9b1d2a4ad4d175a9d4040438e874ce1c2b87",
+    "bytes": 22510958
+  },
+  "imgsz": 640,
+  "detector": {
+    "conf": 0.0003,
+    "iou": 0.8,
+    "max_det": 300
+  },
+  "thresholds": {
+    "smoke": 0.03,
+    "fire": 0.002
+  },
+  "frame_peak_confidence": 0.125,
+  "calibration_images": 300,
+  "test_images": 600,
+  "calibration": {
+    "boxes": {
+      "threshold": [
+        0.03,
+        0.002
+      ],
+      "precision": {
+        "smoke": 0.3790523690773067,
+        "fire": 0.09021842355175688
+      },
+      "recall": {
+        "smoke": 0.9382716049382716,
+        "fire": 0.9178743961352657
+      },
+      "small_recall": {
+        "smoke": 0.9411764705882353,
+        "fire": 0.8773584905660378
+      },
+      "small_support": {
+        "smoke": 17,
+        "fire": 106
+      },
+      "truth_support": {
+        "smoke": 162,
+        "fire": 207
+      },
+      "negative_images": 138,
+      "negative_images_with_prediction": 5,
+      "negative_image_alert_rate": 0.036231884057971016,
+      "matrix": [
+        [
+          152,
+          0,
+          10
+        ],
+        [
+          0,
+          190,
+          17
+        ],
+        [
+          249,
+          1916,
+          0
+        ]
+      ]
+    },
+    "frames": {
+      "positive_frames": 162,
+      "candidate_frames": 165,
+      "localized_frames": 154,
+      "localized_frame_recall": 0.9506172839506173,
+      "localized_candidate_precision": 0.9333333333333333
+    }
+  },
+  "test_without_frame_gate": {
+    "boxes": {
+      "threshold": [
+        0.03,
+        0.002
+      ],
+      "precision": {
+        "smoke": 0.33070866141732286,
+        "fire": 0.09534944141335412
+      },
+      "recall": {
+        "smoke": 0.9158878504672897,
+        "fire": 0.9221105527638191
+      },
+      "small_recall": {
+        "smoke": 0.9230769230769231,
+        "fire": 0.8666666666666667
+      },
+      "small_support": {
+        "smoke": 52,
+        "fire": 180
+      },
+      "truth_support": {
+        "smoke": 321,
+        "fire": 398
+      },
+      "negative_images": 280,
+      "negative_images_with_prediction": 41,
+      "negative_image_alert_rate": 0.14642857142857144,
+      "matrix": [
+        [
+          294,
+          0,
+          27
+        ],
+        [
+          0,
+          367,
+          31
+        ],
+        [
+          595,
+          3482,
+          0
+        ]
+      ]
+    },
+    "frames": {
+      "positive_frames": 320,
+      "candidate_frames": 360,
+      "localized_frames": 314,
+      "localized_frame_recall": 0.98125,
+      "localized_candidate_precision": 0.8722222222222222
+    }
+  },
+  "test": {
+    "boxes": {
+      "threshold": [
+        0.03,
+        0.002
+      ],
+      "precision": {
+        "smoke": 0.335632183908046,
+        "fire": 0.09619921363040629
+      },
+      "recall": {
+        "smoke": 0.9096573208722741,
+        "fire": 0.9221105527638191
+      },
+      "small_recall": {
+        "smoke": 0.9230769230769231,
+        "fire": 0.8666666666666667
+      },
+      "small_support": {
+        "smoke": 52,
+        "fire": 180
+      },
+      "truth_support": {
+        "smoke": 321,
+        "fire": 398
+      },
+      "negative_images": 280,
+      "negative_images_with_prediction": 13,
+      "negative_image_alert_rate": 0.04642857142857143,
+      "matrix": [
+        [
+          292,
+          0,
+          29
+        ],
+        [
+          0,
+          367,
+          31
+        ],
+        [
+          578,
+          3448,
+          0
+        ]
+      ]
+    },
+    "frames": {
+      "positive_frames": 320,
+      "candidate_frames": 330,
+      "localized_frames": 312,
+      "localized_frame_recall": 0.975,
+      "localized_candidate_precision": 0.9454545454545454
+    }
+  }
+}

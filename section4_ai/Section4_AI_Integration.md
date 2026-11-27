@@ -18,9 +18,9 @@ Hong Kong valley morning fog, bright cloud edges, and solar glare closely mimic 
 
 ## 4.4 D-Fire Benchmark Trial
 
-Using a fixed 4,500-image stratified D-Fire split (3,300 train, 600 validation, 600 held-out test; de Venâncio, Lisboa, & Barbosa, 2022), we compared our 5-epoch 256 px local baseline against 640 px converged YOLOv8n and YOLOv8s models (Tleuliyev, n.d.), WiSE-FT aerial fine-tuning (`v8n_aerial_aug`), and 768 px multi-scale TTA (`v8s_768_TTA`). Thresholds and peak gates were frozen on 300 disjoint calibration images before once-only testing.
+Using a fixed 4,500-image stratified D-Fire split (3,300 train, 600 validation, 600 held-out test; de Venâncio, Lisboa, & Barbosa, 2022), we compared our 5-epoch 256 px local baseline against 640 px converged YOLOv8n and YOLOv8s models (Tleuliyev, n.d.), WiSE-FT aerial fine-tuning (v8n aerial-aug), and 768 px multi-scale TTA (v8s 768 TTA). Thresholds and peak gates were frozen on 300 disjoint calibration images before once-only testing.
 
-Single-pass `YOLOv8s (640 px)` and `YOLOv8s (768 TTA)` met industrial targets across overall, smoke, and fire localized-frame detection (same-class IoU ≥ 0.50: Precision ≥ 85%, Recall ≥ 90%), reaching 92.4% / 95.3% and 94.2% / 95.9% overall with 82.7%–88.9% small-smoke recall and 3.2%–4.6% single-frame background alarms. `YOLOv8n (640 px)` achieved 93.8% precision and 93.8% recall at 14.6 ONNX CPU FPS (2.9% negative alarms), while WiSE-FT fine-tuning improved smoke box precision by +8.0 percentage points (to 74.4%).
+Single-pass YOLOv8s (640 px) and YOLOv8s (768 TTA) met industrial targets across overall, smoke, and fire localized-frame detection (same-class IoU ≥ 0.50: Precision ≥ 85%, Recall ≥ 90%), reaching 92.4% / 95.3% and 94.2% / 95.9% overall with 82.7%–88.9% small-smoke recall and 3.2%–4.6% single-frame background alarms. YOLOv8n (640 px) achieved 93.8% precision and 93.8% recall at 14.6 ONNX CPU FPS (2.9% negative alarms), while WiSE-FT fine-tuning improved smoke box precision by +8.0 percentage points (to 74.4%).
 
 **Held-out D-Fire benchmark results (600 fixed test images)**
 
@@ -36,7 +36,7 @@ Single-pass `YOLOv8s (640 px)` and `YOLOv8s (768 TTA)` met industrial targets ac
 
 ![Original pipeline, learning curves, industrial precision-recall comparison, confusion matrix and annotated D-Fire test photographs](results/figure3_edge_ai.png)
 
-**Figure 3.** Edge AI fire/smoke detection pipeline and held-out D-Fire benchmark evaluation. (a) On-board dual-sensor perception and alert confirmation architecture; (b) 640 px aerial fine-tuning validation trajectories with mosaic closure; (c) held-out localized-frame precision/recall and small-smoke recall across 600 test images; (d) YOLOv8s (640 px) box confusion counts; (e) qualitative held-out D-Fire detections (de Venâncio et al., 2022).
+**Figure 3.** Edge AI fire/smoke detection pipeline and held-out D-Fire benchmark evaluation. (a) On-board dual-sensor perception and alert confirmation architecture; (b) YOLOv8n (640 px) aerial fine-tuning validation trajectories with mosaic closure; (c) held-out localized-frame precision/recall and small-smoke recall across 600 test images (highlighting the deployed v8s 640 px profile); (d) deployed v8s 640 px box confusion counts; (e) qualitative held-out D-Fire detections (de Venâncio et al., 2022).
 
 ## References
 

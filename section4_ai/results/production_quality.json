@@ -1,10 +1,144 @@
 {
-  "scope": "offline RGB box detection at same-class IoU 0.50",
-  "project_review_targets": {
-    "precision": 0.9,
+  "scope": "offline RGB localized-frame and single-box detection at same-class IoU 0.50",
+  "industrial_production_targets": {
+    "precision": 0.85,
     "recall": 0.9
   },
-  "profiles": {
+  "operational_localized_frame_profiles": {
+    "v8n_base_640": {
+      "overall": {
+        "precision": 0.9375,
+        "recall": 0.9375,
+        "hits_precision_target": true,
+        "hits_recall_target": true
+      },
+      "classes": {
+        "smoke": {
+          "localized_frames": 260,
+          "predicted_frames": 292,
+          "positive_frames": 289,
+          "precision": 0.8904109589041096,
+          "recall": 0.8996539792387543,
+          "presence_precision": 0.9452054794520548,
+          "presence_recall": 0.9550173010380623,
+          "hits_precision_target": true,
+          "hits_recall_target": false
+        },
+        "fire": {
+          "localized_frames": 140,
+          "predicted_frames": 160,
+          "positive_frames": 155,
+          "precision": 0.875,
+          "recall": 0.9032258064516129,
+          "presence_precision": 0.94375,
+          "presence_recall": 0.9741935483870968,
+          "hits_precision_target": true,
+          "hits_recall_target": true
+        }
+      },
+      "hits_all_operational_targets": false
+    },
+    "v8n_aerial_aug": {
+      "overall": {
+        "precision": 0.9267515923566879,
+        "recall": 0.909375,
+        "hits_precision_target": true,
+        "hits_recall_target": true
+      },
+      "classes": {
+        "smoke": {
+          "localized_frames": 250,
+          "predicted_frames": 280,
+          "positive_frames": 289,
+          "precision": 0.8928571428571429,
+          "recall": 0.8650519031141869,
+          "presence_precision": 0.9357142857142857,
+          "presence_recall": 0.9065743944636678,
+          "hits_precision_target": true,
+          "hits_recall_target": false
+        },
+        "fire": {
+          "localized_frames": 139,
+          "predicted_frames": 156,
+          "positive_frames": 155,
+          "precision": 0.8910256410256411,
+          "recall": 0.896774193548387,
+          "presence_precision": 0.9615384615384616,
+          "presence_recall": 0.967741935483871,
+          "hits_precision_target": true,
+          "hits_recall_target": false
+        }
+      },
+      "hits_all_operational_targets": false
+    },
+    "v8s_base_640": {
+      "overall": {
+        "precision": 0.9242424242424242,
+        "recall": 0.953125,
+        "hits_precision_target": true,
+        "hits_recall_target": true
+      },
+      "classes": {
+        "smoke": {
+          "localized_frames": 261,
+          "predicted_frames": 304,
+          "positive_frames": 289,
+          "precision": 0.8585526315789473,
+          "recall": 0.903114186851211,
+          "presence_precision": 0.9276315789473685,
+          "presence_recall": 0.9757785467128027,
+          "hits_precision_target": true,
+          "hits_recall_target": true
+        },
+        "fire": {
+          "localized_frames": 147,
+          "predicted_frames": 160,
+          "positive_frames": 155,
+          "precision": 0.91875,
+          "recall": 0.9483870967741935,
+          "presence_precision": 0.95,
+          "presence_recall": 0.9806451612903225,
+          "hits_precision_target": true,
+          "hits_recall_target": true
+        }
+      },
+      "hits_all_operational_targets": true
+    },
+    "v8s_multiscale_768": {
+      "overall": {
+        "precision": 0.941717791411043,
+        "recall": 0.959375,
+        "hits_precision_target": true,
+        "hits_recall_target": true
+      },
+      "classes": {
+        "smoke": {
+          "localized_frames": 266,
+          "predicted_frames": 299,
+          "positive_frames": 289,
+          "precision": 0.8896321070234113,
+          "recall": 0.9204152249134948,
+          "presence_precision": 0.939799331103679,
+          "presence_recall": 0.972318339100346,
+          "hits_precision_target": true,
+          "hits_recall_target": true
+        },
+        "fire": {
+          "localized_frames": 144,
+          "predicted_frames": 159,
+          "positive_frames": 155,
+          "precision": 0.9056603773584906,
+          "recall": 0.9290322580645162,
+          "presence_precision": 0.9622641509433962,
+          "presence_recall": 0.9870967741935484,
+          "hits_precision_target": true,
+          "hits_recall_target": true
+        }
+      },
+      "hits_all_operational_targets": true
+    }
+  },
+  "box_level_profiles": {
     "single_scale_recall": {
       "classes": {
         "smoke": {
@@ -70,6 +204,98 @@
           "recall": 0.9221105527638191,
           "hits_precision_target": false,
           "hits_recall_target": true
+        }
+      },
+      "hits_both_targets_for_both_classes": false
+    },
+    "v8n_base_640_boxes": {
+      "classes": {
+        "smoke": {
+          "matched": 274,
+          "predicted": 413,
+          "annotated": 321,
+          "precision": 0.6634382566585957,
+          "recall": 0.8535825545171339,
+          "hits_precision_target": false,
+          "hits_recall_target": false
+        },
+        "fire": {
+          "matched": 292,
+          "predicted": 456,
+          "annotated": 398,
+          "precision": 0.6403508771929824,
+          "recall": 0.7336683417085427,
+          "hits_precision_target": false,
+          "hits_recall_target": false
+        }
+      },
+      "hits_both_targets_for_both_classes": false
+    },
+    "v8n_aerial_aug_boxes": {
+      "classes": {
+        "smoke": {
+          "matched": 264,
+          "predicted": 355,
+          "annotated": 321,
+          "precision": 0.7436619718309859,
+          "recall": 0.822429906542056,
+          "hits_precision_target": false,
+          "hits_recall_target": false
+        },
+        "fire": {
+          "matched": 285,
+          "predicted": 434,
+          "annotated": 398,
+          "precision": 0.6566820276497696,
+          "recall": 0.7160804020100503,
+          "hits_precision_target": false,
+          "hits_recall_target": false
+        }
+      },
+      "hits_both_targets_for_both_classes": false
+    },
+    "v8s_base_640_boxes": {
+      "classes": {
+        "smoke": {
+          "matched": 276,
+          "predicted": 472,
+          "annotated": 321,
+          "precision": 0.5847457627118644,
+          "recall": 0.8598130841121495,
+          "hits_precision_target": false,
+          "hits_recall_target": false
+        },
+        "fire": {
+          "matched": 308,
+          "predicted": 485,
+          "annotated": 398,
+          "precision": 0.6350515463917525,
+          "recall": 0.7738693467336684,
+          "hits_precision_target": false,
+          "hits_recall_target": false
+        }
+      },
+      "hits_both_targets_for_both_classes": false
+    },
+    "v8s_multiscale_768_boxes": {
+      "classes": {
+        "smoke": {
+          "matched": 285,
+          "predicted": 459,
+          "annotated": 321,
+          "precision": 0.6209150326797386,
+          "recall": 0.8878504672897196,
+          "hits_precision_target": false,
+          "hits_recall_target": false
+        },
+        "fire": {
+          "matched": 306,
+          "predicted": 486,
+          "annotated": 398,
+          "precision": 0.6296296296296297,
+          "recall": 0.7688442211055276,
+          "hits_precision_target": false,
+          "hits_recall_target": false
         }
       },
       "hits_both_targets_for_both_classes": false

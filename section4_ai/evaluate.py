@@ -145,12 +145,60 @@ def frame_candidate_metrics(cases):
             'localized_candidate_precision': localized_frames / max(1, candidate_frames)}
 
 
+def class_frame_metrics(cases):
+    """Compute per-class localized-frame (IoU >= 0.50) and image-presence precision/recall."""
+    metrics = {}
+    for cls_id, label in enumerate(CLASSES):
+        positives = predicted = localized = present_hits = 0
+        for case in cases:
+            has_gt = any(item[0] == cls_id for item in case['truth'])
+            preds = [pred for pred in case['predictions'] if int(pred[5]) == cls_id]
+            has_pred = bool(preds)
+            positives += has_gt
+            predicted += has_pred
+            if has_gt and has_pred:
+                present_hits += 1
+                if any(pred[6] >= 0 for pred in preds):
+                    localized += 1
+        metrics[label] = {
+            'positive_frames': positives,
+            'predicted_frames': predicted,
+            'localized_frames': localized,
+            'presence_hits': present_hits,
+            'localized_precision': localized / max(1, predicted),
+            'localized_recall': localized / max(1, positives),
+            'presence_precision': present_hits / max(1, predicted),
+            'presence_recall': present_hits / max(1, positives),
+        }
+    return metrics
+
+
 def gate_frames(rows, thresholds, peak_threshold):
     """Suppress all RGB proposals when a frame has no sufficiently confident surviving box."""
     for filename, width, height, labels, boxes, timing in rows:
         accepted = [box for box in boxes if box[4] >= thresholds[int(box[5])]]
         if max((box[4] for box in accepted), default=0.) < peak_threshold:
             accepted = []
+        yield (filename, width, height, labels, accepted, timing)
+
+
+def gate_class_frames(rows, thresholds, peak_thresholds, nms_iou=None):
+    """Apply optional class-wise NMS and per-class peak confidence gating."""
+    from torchvision.ops import nms as tv_nms
+
+    for filename, width, height, labels, boxes, timing in rows:
+        accepted = []
+        for cls_id in range(len(CLASSES)):
+            cls_boxes = [box for box in boxes if int(box[5]) == cls_id and box[4] >= thresholds[cls_id]]
+            if not cls_boxes:
+                continue
+            if nms_iou is not None and len(cls_boxes) > 1:
+                tensor = torch.tensor(cls_boxes, dtype=torch.float32)
+                keep = tv_nms(tensor[:, :4], tensor[:, 4], nms_iou).tolist()
+                cls_boxes = [cls_boxes[i] for i in keep]
+            if max(box[4] for box in cls_boxes) >= peak_thresholds[cls_id]:
+                accepted.extend(cls_boxes)
+        accepted.sort(key=lambda box: -box[4])
         yield (filename, width, height, labels, accepted, timing)
 
 

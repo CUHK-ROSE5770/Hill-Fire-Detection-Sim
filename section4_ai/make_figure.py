@@ -1,4 +1,4 @@
-"""Draw Figure 3 from archived benchmark data and test box coordinates."""
+"""Draw publication-grade Figure 3 from archived benchmark data, training curves, and test box coordinates."""
 
 import argparse
 import csv
@@ -16,9 +16,6 @@ from matplotlib.patches import FancyBboxPatch, Rectangle
 from PIL import Image, ImageOps
 
 
-PALETTE = {'v8n_base': '#164e75', 'v8s_base': '#a44c23', 'v8n_aug': '#17796b'}
-LABELS = {'v8n_base': 'v8n baseline', 'v8s_base': 'v8s baseline', 'v8n_aug': 'v8n augmented'}
-MARKERS = {'v8n_base': 'o', 'v8s_base': 's', 'v8n_aug': '^'}
 INK = '#182e3a'
 SLATE = '#455e6d'
 CLASS_NAMES = ('smoke', 'fire')
@@ -36,20 +33,130 @@ def pipeline(axes):
     axes.set_xlim(0, 1)
     axes.set_ylim(0, 1)
     axes.axis('off')
-    labels = ('RGB\nYOLOv8', '3 matching\nframes', 'Aligned LWIR\nthermal rise', 'Ray–DEM\nlocalization', 'Mesh alert and\nverify / track')
+    labels = (
+        'RGB YOLOv8\n(640 px FP16)',
+        'Class Peak Gate\n+ IoU 0.50 NMS',
+        '3-Frame Track\nPersistence',
+        'Aligned LWIR\nΔT ≥ 5 °C Check',
+        'Ray–DEM & Mesh\nSwarm Alert',
+    )
     for index, label in enumerate(labels):
-        x = .01 + index * .20
-        axes.add_patch(FancyBboxPatch((x, .28), .176, .38, boxstyle='round,pad=.004,rounding_size=.018',
-                                      facecolor='#e9f5f1' if index < 3 else '#edf3f7', edgecolor='#a5bbc5'))
-        axes.text(x + .088, .47, label, ha='center', va='center', size=13, color=INK)
+        x = .008 + index * .200
+        axes.add_patch(FancyBboxPatch(
+            (x, .27), .178, .42, boxstyle='round,pad=.004,rounding_size=.018',
+            facecolor='#e7f4f0' if index < 4 else '#ebf2f7', edgecolor='#9ab3bf', linewidth=1.1,
+        ))
+        axes.text(x + .089, .48, label, ha='center', va='center', size=11.5, color=INK, fontweight='semibold')
         if index < len(labels) - 1:
-            axes.annotate('', (x + .197, .47), (x + .179, .47), arrowprops={'arrowstyle': '->', 'color': SLATE})
-    axes.text(.01, .08, 'Without thermal corroboration, a persistent RGB cue stays a candidate for verification.',
-              color=SLATE, size=12)
+            axes.annotate('', (x + .198, .48), (x + .180, .48),
+                          arrowprops={'arrowstyle': '->', 'color': SLATE, 'lw': 1.5})
+    axes.text(.008, .06,
+              'On-board confirmation: persistent RGB cues without thermal rise remain visual candidates for cross-view or operator verification.',
+              color=SLATE, size=10.5)
 
 
 def title(axes, text):
-    axes.set_title(text, loc='left', color=INK, fontweight='bold', fontsize=15, pad=9)
+    axes.set_title(text, loc='left', color=INK, fontweight='bold', fontsize=13.5, pad=8)
+
+
+def plot_curves(axes, results_dir, prod_models):
+    local_specs = [
+        ('v8n_base', 'v8n 256 px (5 ep)', '#7d98a8', 'o', '--'),
+        ('v8s_base', 'v8s 256 px (5 ep)', '#c27b57', 's', '--'),
+        ('v8n_aug', 'v8n aug 256 px (5 ep)', '#72a89c', '^', ':'),
+    ]
+    for name, label, color, marker, ls in local_specs:
+        csv_path = results_dir / f'{name}_training.csv'
+        if csv_path.exists():
+            with csv_path.open(newline='', encoding='utf-8') as stream:
+                records = [{k.strip(): float(v) for k, v in row.items()} for row in csv.DictReader(stream)]
+            axes.plot([r['epoch'] for r in records], [r['metrics/mAP50(B)'] * 100 for r in records],
+                      label=label, color=color, marker=marker, linestyle=ls, linewidth=1.7, markersize=4.5)
+
+    ft_csv = results_dir / 'v8n_aerial_aug_training.csv'
+    if ft_csv.exists():
+        with ft_csv.open(newline='', encoding='utf-8') as stream:
+            records = [{k.strip(): float(v) for k, v in row.items()} for row in csv.DictReader(stream)]
+        axes.plot([r['epoch'] for r in records], [r['metrics/mAP50(B)'] * 100 for r in records],
+                  label='v8n aerial FT 640 px (val)', color='#17796b', marker='D', linewidth=2.4, markersize=5.5)
+
+    if 'v8s_base_640' in prod_models:
+        s_map = prod_models['v8s_base_640']['standard_ap']['map50'] * 100
+        axes.axhline(s_map, color='#a44c23', linestyle='-.', linewidth=1.7, label=f'v8s 640 px test ({s_map:.1f}%)')
+    if 'v8n_base_640' in prod_models:
+        n_map = prod_models['v8n_base_640']['standard_ap']['map50'] * 100
+        axes.axhline(n_map, color='#164e75', linestyle=':', linewidth=1.7, label=f'v8n 640 px test ({n_map:.1f}%)')
+
+    axes.set(xlabel='Epoch', ylabel='mAP@0.5 (%)', ylim=(8, 92))
+    axes.set_xticks([1, 2, 3, 4, 5])
+    axes.tick_params(labelsize=10)
+    axes.xaxis.label.set_size(11)
+    axes.yaxis.label.set_size(11)
+    axes.grid(axis='y', alpha=.25)
+    axes.spines[['right', 'top']].set_visible(False)
+    axes.legend(loc='center left', bbox_to_anchor=(.01, .62), ncol=2, frameon=True,
+                facecolor='white', framealpha=.92, edgecolor='none', fontsize=7.4, columnspacing=.8, handlelength=1.8)
+
+
+def plot_industrial_pr(axes, prod_models):
+    arms = [
+        ('v8n_base_640', 'v8n\n640 px'),
+        ('v8n_aerial_aug', 'v8n aug\nWiSE-FT'),
+        ('v8s_base_640', 'v8s\n640 px'),
+        ('v8s_multiscale_768', 'v8s\n768 TTA'),
+    ]
+    x = np.arange(len(arms))
+    w = 0.26
+    overall_p = [prod_models[k]['test']['frames']['localized_candidate_precision'] * 100 for k, _ in arms]
+    overall_r = [prod_models[k]['test']['frames']['localized_frame_recall'] * 100 for k, _ in arms]
+    small_r = [prod_models[k]['test']['boxes']['small_recall']['smoke'] * 100 for k, _ in arms]
+
+    b1 = axes.bar(x - w, overall_p, width=w * 0.92, color='#164e75', label='Frame Prec.')
+    b2 = axes.bar(x, overall_r, width=w * 0.92, color='#17796b', label='Frame Rec.')
+    b3 = axes.bar(x + w, small_r, width=w * 0.92, color='#c67632', label='Small-Smoke R')
+    axes.axhline(90, color='#0f594c', linestyle='--', linewidth=1.2, alpha=.85, label='90% Recall')
+    axes.axhline(85, color='#164e75', linestyle=':', linewidth=1.2, alpha=.85, label='85% Prec.')
+
+    for bars in (b1, b2, b3):
+        for bar in bars:
+            val = bar.get_height()
+            axes.text(bar.get_x() + bar.get_width() / 2, val + 0.7, f'{val:.1f}',
+                      ha='center', va='bottom', fontsize=7.2, color=INK, fontweight='bold')
+
+    axes.set_xticks(x, [lbl for _, lbl in arms], fontsize=9.5)
+    axes.set(ylabel='Held-out score (%)', ylim=(68, 108))
+    axes.tick_params(axis='y', labelsize=10)
+    axes.yaxis.label.set_size(11)
+    axes.grid(axis='y', alpha=.25)
+    axes.spines[['right', 'top']].set_visible(False)
+    axes.legend(loc='upper center', ncol=3, frameon=True, facecolor='white', framealpha=.92,
+                edgecolor='none', fontsize=7.4, columnspacing=.8, handlelength=1.6)
+
+
+def plot_confusion(axes, prod_models, model_name):
+    selected = prod_models[model_name]
+    matrix = np.array(selected['test']['confusion_true_by_predicted'])
+    operating = selected['test']['boxes']
+    if not np.array_equal(matrix.diagonal()[:2], np.asarray(operating['matrix']).diagonal()[:2]):
+        raise ValueError('Confusion matrix and reported true-positive counts disagree')
+    if not np.array_equal(matrix.sum(1)[:2], list(operating['truth_support'].values())):
+        raise ValueError('Confusion matrix and reported test support disagree')
+    percentages = matrix / np.maximum(matrix.sum(axis=1, keepdims=True), 1)
+    axes.imshow(percentages, cmap='Blues', vmin=0, vmax=1)
+    tick_labels = ['Smoke', 'Fire', 'Bg']
+    axes.set_xticks(range(3), tick_labels, fontsize=10)
+    axes.set_yticks(range(3), tick_labels, fontsize=10)
+    f = selected['test']['frames']
+    axes.set(
+        xlabel=f"Predicted ({model_name})\nFrame P {f['localized_candidate_precision']*100:.1f}% · R {f['localized_frame_recall']*100:.1f}%",
+        ylabel='Reference class',
+    )
+    axes.xaxis.label.set_size(10)
+    axes.yaxis.label.set_size(10.5)
+    for row, col in np.ndindex(matrix.shape):
+        color = 'white' if percentages[row, col] > .55 else INK
+        count = '–' if (row, col) == (2, 2) else str(matrix[row, col])
+        axes.text(col, row, count, color=color, va='center', ha='center', size=12.5, fontweight='bold')
 
 
 def qualitative(axes, cases, images):
@@ -76,7 +183,7 @@ def qualitative(axes, cases, images):
         def box(coords, color, linestyle, tag, prediction=False):
             x1, y1, x2, y2 = coords
             outline = Rectangle((x1, y1), x2 - x1, y2 - y1, fill=False, edgecolor=color,
-                                linewidth=1.6, linestyle=linestyle)
+                                linewidth=1.7, linestyle=linestyle)
             outline.set_path_effects([patheffects.withStroke(linewidth=2.9, foreground='#182023')])
             frame.add_patch(outline)
             if prediction:
@@ -100,18 +207,18 @@ def qualitative(axes, cases, images):
             index_of_box = prediction[6] if prediction else reference[0]
             box(case['truth'][index_of_box][1:5], REFERENCE_COLOR, '-', f'Truth {target_class}')
             if prediction:
-                status = f'Matched {target_class} box'
+                status = f'Matched {target_class} ({prediction[4]:.2f})'
         else:
             prediction = max(case['predictions'], key=lambda row: row[4], default=None)
-            status = 'False alert on a negative frame' if prediction else 'No alert on a negative frame'
+            status = 'False alert on a negative frame' if prediction else 'Clean negative frame (no alert)'
         if prediction:
             box(prediction[:4], PREDICTION_COLOR, '--', f'{CLASS_NAMES[prediction[5]]} {prediction[4]:.2f}', True)
-        axes.text(center, .94, label, ha='center', va='center', fontsize=12, color=INK)
-        axes.text(center, .19, status, ha='center', va='center', fontsize=9.5, color=INK)
-        axes.text(center, .11, filename, ha='center', va='center', fontsize=8.5, color=SLATE)
-    axes.legend(handles=[Line2D([], [], color='#17796b', lw=2, label='Dataset box'),
-                         Line2D([], [], color='#be601e', lw=2, ls='--', label='Model box and confidence')],
-                loc='lower center', bbox_to_anchor=(.50, -.10), ncol=2, frameon=False, fontsize=10)
+        axes.text(center, .94, label, ha='center', va='center', fontsize=11.5, color=INK, fontweight='bold')
+        axes.text(center, .19, status, ha='center', va='center', fontsize=9.5, color='#145a46' if 'Missed' not in status and 'False' not in status else '#9c3618', fontweight='semibold')
+        axes.text(center, .10, filename, ha='center', va='center', fontsize=8.5, color=SLATE)
+    axes.legend(handles=[Line2D([], [], color='#17796b', lw=2, label='Dataset ground-truth box'),
+                         Line2D([], [], color='#be601e', lw=2, ls='--', label='Calibrated YOLOv8s (640 px) box and confidence')],
+                loc='lower center', bbox_to_anchor=(.50, -.11), ncol=2, frameon=False, fontsize=10)
 
 
 def main():
@@ -119,55 +226,35 @@ def main():
     parser.add_argument('--results', type=Path, required=True)
     parser.add_argument('--images', type=Path, required=True, help='Images directory of the fixed test split')
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--model', default='v8n_aug')
+    parser.add_argument('--model', default='v8s_base_640')
     args = parser.parse_args()
-    results = json.loads((args.results / 'benchmark.json').read_text(encoding='utf-8'))['experiments']
-    cases = json.loads((args.results / f'{args.model}_test_boxes.json').read_text(encoding='utf-8'))
-    figure = plt.figure(figsize=(13.3, 7.45), layout='constrained', facecolor='white')
-    grid = figure.add_gridspec(3, 2, height_ratios=[.70, 1.50, 1.35], width_ratios=[1.60, 1.])
-    design = figure.add_subplot(grid[0, :])
-    title(design, '(a) Onboard detection and alert confirmation')
-    pipeline(design)
-    plot = figure.add_subplot(grid[1, 0])
-    title(plot, '(b) Validation learning curves')
-    for name in results:
-        with (args.results / f'{name}_training.csv').open(newline='', encoding='utf-8') as stream:
-            records = [{key.strip(): float(value) for key, value in row.items()} for row in csv.DictReader(stream)]
-        plot.plot([row['epoch'] for row in records], [row['metrics/mAP50(B)'] * 100 for row in records],
-                  label=LABELS[name], color=PALETTE[name], marker=MARKERS[name], linewidth=2.3)
-    plot.set(xlabel='Epoch', ylabel='mAP@0.5 (%)')
-    plot.set_xticks(sorted({row['epoch'] for row in records}))
-    plot.tick_params(labelsize=12)
-    plot.xaxis.label.set_size(13)
-    plot.yaxis.label.set_size(13)
-    plot.grid(axis='y', alpha=.25)
-    plot.spines[['right', 'top']].set_visible(False)
-    plot.legend(loc='lower right', frameon=False, fontsize=12)
 
-    matrix_axes = figure.add_subplot(grid[1, 1])
-    title(matrix_axes, '(c) Held-out confusion')
-    selected = results[args.model]
-    matrix = np.array(selected['test_confusion_true_by_predicted'])
-    operating = selected['test_operating_point']
-    if not np.array_equal(matrix.diagonal()[:2], np.asarray(operating['matrix']).diagonal()[:2]):
-        raise ValueError('Confusion matrix and reported true-positive counts disagree')
-    if not np.array_equal(matrix.sum(1)[:2], list(operating['truth_support'].values())):
-        raise ValueError('Confusion matrix and reported test support disagree')
-    percentages = matrix / np.maximum(matrix.sum(axis=1, keepdims=True), 1)
-    matrix_axes.imshow(percentages, cmap='Blues', vmin=0, vmax=1)
-    tick_labels = ['Smoke', 'Fire', 'Background']
-    matrix_axes.set_xticks(range(3), tick_labels, fontsize=11)
-    matrix_axes.set_yticks(range(3), tick_labels, fontsize=11)
-    matrix_axes.set(xlabel=f"Predicted class\n{LABELS[args.model]} · conf {operating['threshold']:.2f}",
-                    ylabel='Reference class')
-    for row, col in np.ndindex(matrix.shape):
-        color = 'white' if percentages[row, col] > .55 else INK
-        count = '–' if (row, col) == (2, 2) else str(matrix[row, col])
-        matrix_axes.text(col, row, count, color=color, va='center', ha='center', size=14)
+    prod_models = json.loads((args.results / 'production_benchmark.json').read_text(encoding='utf-8'))['models']
+    cases = json.loads((args.results / f'{args.model}_test_boxes.json').read_text(encoding='utf-8'))
+
+    figure = plt.figure(figsize=(13.6, 7.8), layout='constrained', facecolor='white')
+    grid = figure.add_gridspec(3, 3, height_ratios=[.66, 1.52, 1.38], width_ratios=[1.18, 1.32, .95])
+
+    design = figure.add_subplot(grid[0, :])
+    title(design, '(a) On-board edge AI detection and alert confirmation pipeline')
+    pipeline(design)
+
+    curves = figure.add_subplot(grid[1, 0])
+    title(curves, '(b) Learning & convergence curves')
+    plot_curves(curves, args.results, prod_models)
+
+    bars = figure.add_subplot(grid[1, 1])
+    title(bars, '(c) Held-out P/R vs. industrial targets')
+    plot_industrial_pr(bars, prod_models)
+
+    matrix_axes = figure.add_subplot(grid[1, 2])
+    title(matrix_axes, '(d) Held-out box confusion')
+    plot_confusion(matrix_axes, prod_models, args.model)
 
     bottom = figure.add_subplot(grid[2, :])
-    title(bottom, '(d) Annotated D-Fire test photographs')
+    title(bottom, '(e) Annotated D-Fire held-out test photographs (calibrated YOLOv8s @ 640 px)')
     qualitative(bottom, cases, args.images)
+
     figure.savefig(args.output, dpi=220, facecolor='white')
 
 

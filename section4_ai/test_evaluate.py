@@ -1,7 +1,7 @@
 import unittest
 
-from assess_quality import check_targets
-from evaluate import confusion_matrix, frame_candidate_metrics, gate_frames, score
+from assess_quality import check_operational_targets, check_targets
+from evaluate import class_frame_metrics, confusion_matrix, frame_candidate_metrics, gate_class_frames, gate_frames, score
 from evaluate_multiscale import merge_multiscale
 
 
@@ -44,3 +44,21 @@ class ConfusionMatrixTests(unittest.TestCase):
         rows = [('quiet.jpg', 60, 30, [], [[0, 0, 10, 10, .08, 1], [20, 0, 30, 10, .19, 0]], {})]
         gated = list(gate_frames(rows, (.20, .002), .125))
         self.assertEqual(gated[0][4], [])
+
+    def test_class_peak_gate_and_per_class_frame_metrics(self):
+        truth = [(0, 0, 0, 10, 10, False), (1, 20, 0, 30, 10, False)]
+        rows = [
+            ('hit.jpg', 60, 30, truth, [[0, 0, 10, 10, .30, 0], [20, 0, 30, 10, .28, 1]], {}),
+            ('weak_bg.jpg', 60, 30, [], [[0, 0, 10, 10, .10, 0], [20, 0, 30, 10, .12, 1]], {}),
+        ]
+        gated = list(gate_class_frames(rows, (.05, .05), (.15, .20), nms_iou=.50))
+        self.assertEqual(len(gated[0][4]), 2)
+        self.assertEqual(gated[1][4], [])
+        _, cases = score(gated, (.05, .05))
+        cmetrics = class_frame_metrics(cases)
+        self.assertEqual(cmetrics['smoke']['localized_precision'], 1.0)
+        self.assertEqual(cmetrics['smoke']['localized_recall'], 1.0)
+        self.assertEqual(cmetrics['fire']['localized_precision'], 1.0)
+        self.assertEqual(cmetrics['fire']['localized_recall'], 1.0)
+        audit = check_operational_targets(frame_candidate_metrics(cases), cmetrics, .85, .90)
+        self.assertTrue(audit['hits_all_operational_targets'])
